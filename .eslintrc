@@ -1,0 +1,27 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "quotes": [2, "single"],
+    "prefer-const": 2,
+    "no-const-assign": 2,
+    "no-var": 2,
+    "no-array-constructor": 1,
+    "no-new-object": 1,
+    "object-shorthand": 1,
+    "quote-props": [1, "as-needed"],
+    "prefer-template": 1,
+    "no-loop-func": 2,
+    "no-param-reassign": 2,
+    "prefer-arrow-callback": 0,
+    "arrow-spacing": 1,
+    "indent": [1, 2, {"SwitchCase": 1}],
+    "space-before-blocks": 1,
+    "keyword-spacing": 1,
+    "camelcase": 0,
+    "no-dupe-keys": 1
+  }
+}

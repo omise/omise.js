@@ -1,0 +1,29 @@
+<html>
+<script type="text/javascript" src="http://localhost:5001/omise.js"></script>
+<body>
+    <form id="creditcardForm" name="checkoutForm" method="GET" action="checkout.php">
+      <input type='hidden' name="transaction_type_id" value="1" />
+      <input type='hidden' name="access_token" value="2" />
+      <button type="submit" id="checkout-button">บัตรเครดิต</button>
+    </form>
+    <script>
+      OmiseCard.configureButton('#checkout-button', {
+        submitFormTarget: "#creditcardForm",
+        defaultPaymentMethod: 'credit_card',
+        otherPaymentMethods: ['internet_banking', 'alipay'],
+        publicKey: 'pkey_test_59hx1kio6sjlocx8nbd',
+        amount: 2000,
+        currency: 'thb',
+        frameLabel: 'label',
+        frameDescription: 'descirption',
+        submitLabel: 'ชำระเงิน',
+        location: 'no'
+      });
+      OmiseCard.attach();
+    </script>
+
+  </div>
+
+</body>
+
+</html>
