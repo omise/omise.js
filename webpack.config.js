@@ -1,40 +1,64 @@
 /**
- * --------------------------------------------------------
- * Webpack development config
- * --------------------------------------------------------
+ * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+ * Webpack default config
+ * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
  */
 
-var CleanPlugin = require('clean-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const CleanPlugin = require('clean-webpack-plugin');
 
-module.exports = {
 
-  entry: "./src/omise.ts",
-
+/**
+ * --------------------------------------------------------
+ * Webpack settings
+ * --------------------------------------------------------
+ */
+const config = {
+  entry: './src/index.js',
   output: {
-    filename: "./dist/omise.js"
+    filename: 'omise.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
   },
 
-  devtool: '#inline-source-map',
+  devtool: 'inline-source-map',
 
   devServer: {
     inline: true,
     host: '0.0.0.0',
-    port: 9950,
+    port: 5001,
     historyApiFallback: true,
-    contentBase: './'
+    disableHostCheck: true,
   },
 
   resolve: {
-    extensions: ["", ".webpack.js", ".web.js", ".ts", ".js"]
+    modules: [
+      'src',
+      'node_modules',
+    ],
   },
 
   module: {
-    loaders: [
-      { test: /\.ts$/, loader: "ts-loader" }
-    ]
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: [/node_modules/],
+        use: [{
+          loader: 'babel-loader',
+        }],
+      },
+    ],
   },
 
   plugins: [
-    new CleanPlugin('dist')
+    new CleanPlugin('dist'),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+      },
+    }),
   ]
-}
+};
+
+module.exports = config;
