@@ -1,34 +1,55 @@
 {
-  "name": "omise.js",
-  "version": "2.0.0",
-  "description": "Omise Browser SDK",
-  "main": "omise.js",
+  "name": "ratchagarn-omise.js",
+  "version": "2.2.5",
+  "description": "New version of Omise.js",
+  "main": "webpack.config.js",
   "scripts": {
-    "start": "webpack -w",
-    "dev-server": "webpack-dev-server --hot --colors --progress",
-    "dist": "rm -r ./dist; webpack -p --config=./webpack.production.js"
+    "start": "webpack-dev-server --hot --colors --progress",
+    "dev:production": "webpack-dev-server --hot --colors --progress --config=./webpack.config.production.js",
+    "build": "webpack -p --config=./webpack.config.production.js",
+    "dist": "node ./bin/build-distribution.js",
+    "test": "NODE_PATH=./:./src/ jest --no-cache",
+    "test:watch": "npm test -- --watch",
+    "cypress": "cypress",
+    "e2e": "cypress run",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open"
+  },
+  "jest": {
+    "verbose": true
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/omise/omise.js.git"
+    "url": "git@git.omise.co:ratchagarn/omise.js.git"
   },
   "keywords": [
-    "omise",
-    "browser",
-    "sdk"
+    "Omise.js"
   ],
-  "author": "Robin Clart <robin@omise.co>",
+  "author": "Ratchagarn Naewbuntad",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/omise/omise.js/issues"
-  },
-  "homepage": "https://github.com/omise/omise.js#readme",
   "devDependencies": {
-    "clean-webpack-plugin": "^0.1.11",
-    "source-map-loader": "^0.1.5",
-    "ts-loader": "^0.8.2",
-    "typescript": "^2.0.3",
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.2"
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.1.1",
+    "babel-loader": "^6.4.1",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-class-properties": "^6.10.2",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-env": "^1.6.0",
+    "chalk": "^2.0.1",
+    "clean-webpack-plugin": "^0.1.9",
+    "cypress": "^2.0.4",
+    "eslint": "^3.10.2",
+    "file-loader": "^0.8.5",
+    "jest": "^20.0.4",
+    "moment": "^2.18.1",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "uuid": "^3.0.1",
+    "valid-url": "^1.0.9",
+    "webpack": "^2.3.3",
+    "webpack-combine-loaders": "^2.0.3",
+    "webpack-dev-server": "^2.4.2",
+    "whatwg-fetch": "^2.0.3"
   }
 }
