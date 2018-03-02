@@ -1,0 +1,58 @@
+<html>
+
+<body>
+  <form class="checkout-form" name="checkoutForm" method="GET" action="/checkout.php">
+    <script type="text/javascript" src="https://cdn.omise.co/omise.js" data-key="pkey_test_59hx1kio6sjlocx8nbd" data-amount="10025"
+      data-button-label="pre-built-button">
+      </script>
+
+  </form>
+
+  <div class="row_pay_type">
+
+    <form id="creditcardForm" name="checkoutForm" method="GET" action="card.php">
+      <input type='hidden' name="transaction_type_id" value="1" />
+      <input type='hidden' name="access_token" value="2" />
+      <button type="submit" id="checkout-credit-card">บัตรเครดิต</button>
+    </form>
+    <script>
+      OmiseCard.configureButton('#checkout-credit-card', {
+        submitFormTarget: "#creditcardForm",
+        defaultPaymentMethod: 'credit_card',
+        publicKey: 'pkey_test_59hx1kio6sjlocx8nbd',
+        amount: 2000,
+        currency: 'thb',
+        frameLabel: 'label',
+        frameDescription: 'descirption',
+        submitLabel: 'ชำระเงิน',
+        location: 'no'
+      });
+    </script>
+  </div>
+
+  <div class="row_pay_type">
+
+    <form id="internetBankingForm" name="checkoutForm2" method="GET" action="banking.php">
+      <input type='hidden' name="transaction_type_id" value="1" />
+      <input type='hidden' name="access_token" value="2" />
+      <button type="submit" id="checkout-internet-banking">Internet Banking</button>
+    </form>
+    <script>
+      OmiseCard.configureButton('#checkout-internet-banking', {
+        submitFormTarget: "#internetBankingForm",
+        defaultPaymentMethod: 'internet_banking',
+        publicKey: 'pkey_test_59hx1kio6sjlocx8nbd',
+        amount: 2000,
+        currency: 'thb',
+        frameLabel: 'label',
+        frameDescription: 'descirption',
+        submitLabel: 'ชำระเงิน',
+        location: 'no'
+      });
+      OmiseCard.attach();
+    </script>
+  </div>
+
+</body>
+
+</html>
