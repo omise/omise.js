@@ -1,7 +1,3 @@
-# This repo is deprecated
-
-Development continues at: https://github.com/omise/omise.js
-
 # Omise.js
 
 Omise.js is a JavaScript library which helps secure card information by sending sensitive details from the cardholder's browser directly to the Omise server. The details are converted into a one-time-use token which can be used to create a charge right away or attached to a customer object for later use.
