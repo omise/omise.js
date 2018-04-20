@@ -33,7 +33,6 @@ export default class Omise {
 
       this._rpc = new easyXDM.Rpc({
         remote: `${vaultUrl}/provider`,
-        swf: `${assetUrl}/easyxdm.swf`,
         onReady() {
           clearTimeout(tm);
         }
