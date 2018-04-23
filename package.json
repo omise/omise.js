@@ -1,6 +1,6 @@
 {
   "name": "ratchagarn-omise.js",
-  "version": "2.2.5",
+  "version": "2.3.0",
   "description": "New version of Omise.js",
   "main": "webpack.config.js",
   "scripts": {
