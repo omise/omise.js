@@ -16,16 +16,13 @@ describe('Omise.js', () => {
     expect(verifyConfigStructure({ vaultUrl: 'vaultUrl' }).error).toBeTruthy;
     expect(verifyConfigStructure({
       vaultUrl: 'vaultUrl',
-      assetUrl: 'assetUrl',
     }).error).toBeTruthy;
     expect(verifyConfigStructure({
       vaultUrl: 'vaultUrl',
-      assetUrl: 'assetUrl',
       cardHost: 'cardHost',
     }).error).toBeTruthy;
     expect(verifyConfigStructure({
       vaultUrl: 'vaultUrl',
-      assetUrl: 'assetUrl',
       cardHost: 'cardHost',
       cardUrl: 'cardUrl',
     }).error).toBeTruthy;

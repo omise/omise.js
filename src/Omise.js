@@ -23,7 +23,7 @@ export default class Omise {
       return this._rpc;
     }
     else {
-      const { vaultUrl, assetUrl } = this.config;
+      const { vaultUrl } = this.config;
       const tm = setTimeout(() => {
         this._rpc.destroy();
         this._rpc = null;
@@ -107,9 +107,6 @@ export function verifyConfigStructure(config) {
 
   if (!config.vaultUrl || !isUri(config.vaultUrl)) {
     result.message = 'Missing valutUrl';
-  }
-  else if (!config.assetUrl || !isUri(config.assetUrl)) {
-    result.message = 'Missing assetUrl';
   }
   else if (!config.cardHost || !isUri(config.cardHost)) {
     result.message = 'Missing cardHost';
