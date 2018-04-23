@@ -134,7 +134,7 @@ Now you can view omise.js at `http://localhost:5001/omise.js` or insert Omise.js
 
 | NODE_ENV | CDN URL |
 | --- | --- |
-| `staging` | https://omise-cdn.s3.amazonaws.com/assets/omise-js-v2 |
+| `staging` | https://cdn.dev-omise.co |
 | `production` | https://cdn.omise.co |
 | `development`(default) | http://localhost:5002 |
 >if you not sure, please use `production`
