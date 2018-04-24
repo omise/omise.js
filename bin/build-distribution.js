@@ -27,7 +27,7 @@ exec('npm run build', (err) => {
 
   let cdnUrl
   if (env === 'staging') {
-    cdnUrl = 'https://omise-cdn.s3.amazonaws.com/assets/omise-js-v2';
+    cdnUrl = 'https://cdn.dev-omise.co';
   } else if (env === 'production') {
     cdnUrl = 'https://cdn.omise.co';
   } else {
