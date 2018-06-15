@@ -38,7 +38,7 @@
     "babel-preset-env": "^1.6.0",
     "chalk": "^2.0.1",
     "clean-webpack-plugin": "^0.1.9",
-    "cypress": "^2.0.4",
+    "cypress": "3.0.1",
     "eslint": "^3.10.2",
     "file-loader": "^0.8.5",
     "jest": "^20.0.4",

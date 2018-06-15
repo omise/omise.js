@@ -310,7 +310,16 @@ export default class OmiseCard {
    * @return {Object} configure after merged and fix.
    */
   prepareConfig(newConfig) {
+    const { otherPaymentMethods } = newConfig
+    if (otherPaymentMethods && typeof otherPaymentMethods == 'string') {
+      newConfig.otherPaymentMethods = this.stringToArray(otherPaymentMethods)
+    }
+
     return merge(this.app.defaultConfig, fixConfigName(newConfig))
+  }
+
+  stringToArray(str) {
+    return str.split(',').map(s => s.trim())
   }
 
   /**

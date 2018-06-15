@@ -2,14 +2,12 @@
 
 <body>
   <form class="checkout-form" name="checkoutForm" method="GET" action="/checkout.php">
-    <script type="text/javascript" src="https://cdn.omise.co/omise.js" data-key="pkey_test_59hx1kio6sjlocx8nbd" data-amount="10025"
-      data-button-label="pre-built-button">
+    <script type="text/javascript" src="http://localhost:5001/omise.js" data-key="pkey_test_5bgesov6ufhd884goy6" data-amount="10025"
+      data-button-label="Click to see an example">
       </script>
-
   </form>
 
   <div class="row_pay_type">
-
     <form id="creditcardForm" name="checkoutForm" method="GET" action="card.php">
       <input type='hidden' name="transaction_type_id" value="1" />
       <input type='hidden' name="access_token" value="2" />
@@ -19,7 +17,7 @@
       OmiseCard.configureButton('#checkout-credit-card', {
         submitFormTarget: "#creditcardForm",
         defaultPaymentMethod: 'credit_card',
-        publicKey: 'pkey_test_59hx1kio6sjlocx8nbd',
+        publicKey: 'pkey_test_5bgesov6ufhd884goy6',
         amount: 2000,
         currency: 'thb',
         frameLabel: 'label',
@@ -31,7 +29,6 @@
   </div>
 
   <div class="row_pay_type">
-
     <form id="internetBankingForm" name="checkoutForm2" method="GET" action="banking.php">
       <input type='hidden' name="transaction_type_id" value="1" />
       <input type='hidden' name="access_token" value="2" />
@@ -41,7 +38,7 @@
       OmiseCard.configureButton('#checkout-internet-banking', {
         submitFormTarget: "#internetBankingForm",
         defaultPaymentMethod: 'internet_banking',
-        publicKey: 'pkey_test_59hx1kio6sjlocx8nbd',
+        publicKey: 'pkey_test_5bgesov6ufhd884goy6',
         amount: 2000,
         currency: 'thb',
         frameLabel: 'label',
