@@ -5,10 +5,10 @@
  */
 
 const config = {
-  vaultUrl: 'https://vault.omise.co',
+  vaultUrl: 'http://vault.lvh.me:4500',
   cardHost: 'http://localhost:5002',
-  cardUrl:  'http://localhost:5002/pay.html',
-  interfaceUrl: 'https://api.omise.co',
-};
+  cardUrl: 'http://localhost:5002/pay.html',
+  interfaceUrl: 'http://api.lvh.me:3000',
+}
 
-export default config;
+export default config
