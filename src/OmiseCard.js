@@ -7,34 +7,34 @@ import listenMessage, {
   messageShowIframeAppForm,
   messageCloseIframe,
   messageCloseAndSendToken,
-} from './message';
+} from './message'
 
 import {
   merge,
   isEmpty,
   extractDataFromElement,
   camelCaseToDash,
-} from 'helpers/utils';
+} from 'helpers/utils'
 
 export const defaultIframeAppConfig = {
-  key:                  '',
-  amount:               0,
-  currency:             'THB', // THB,USD,JPY
-  image:                'https://cdn.omise.co/assets/frontend-images/store-logo.svg',
-  frameLabel:           'Omise',
+  key: '',
+  amount: 0,
+  currency: 'THB', // THB,USD,JPY
+  image: 'https://cdn.omise.co/assets/frontend-images/store-logo.svg',
+  frameLabel: 'Omise',
   defaultPaymentMethod: 'credit_card',
-  otherPaymentMethods:  [],
-  frameDescription:     'Secured by Omise',
-  submitLabel:          'Checkout',
-  buttonLabel:          'Pay with Omise',
-  location:             'no',
-  submitAuto:           'yes',
-  submitFormTarget:     '',
-  cardBrands:           'visa mastercard',
-  locale:               'en', // en,th,ja
+  otherPaymentMethods: [],
+  frameDescription: 'Secured by Omise',
+  submitLabel: 'Checkout',
+  buttonLabel: 'Pay with Omise',
+  location: 'no',
+  submitAuto: 'yes',
+  submitFormTarget: '',
+  cardBrands: 'visa mastercard',
+  locale: 'en', // en,th,ja
   autoCardNumberFormat: 'yes', // yes,no
-  expiryDateStyle:      '', // basic
-};
+  expiryDateStyle: '', // basic
+}
 
 export const iframeDefaultStyle = [
   'display: none',
@@ -53,16 +53,16 @@ export const iframeDefaultStyle = [
   'overflow-y: auto',
   '-webkit-tap-highlight-color: transparent',
   'transition: background-color .2s',
-];
+]
 
-const noop = () => {};
+const noop = () => {}
 
 export default class OmiseCard {
   constructor(settings, initWhenStart = true) {
-    this.setup(settings);
+    this.setup(settings)
 
     if (initWhenStart) {
-      this.init();
+      this.init()
     }
   }
 
@@ -72,43 +72,45 @@ export default class OmiseCard {
    */
   setup(settings) {
     this.app = {
-      settings:                    { ...settings },
-      iframe:                      null,
-      omiseScriptTag:              null,
+      settings: { ...settings },
+      iframe: null,
+      omiseScriptTag: null,
       omiseGenerateCheckoutButton: null,
-      iframeAppId:                 'omise-checkout-iframe-app',
-      defaultConfig:               { ...defaultIframeAppConfig },
-      configForIframeOnLoad:       { ...defaultIframeAppConfig },
-      currentOpenConfig:           {},
-      formElement:                 null,
-      allConfigureButtons:         [],
-    };
+      iframeAppId: 'omise-checkout-iframe-app',
+      defaultConfig: { ...defaultIframeAppConfig },
+      configForIframeOnLoad: { ...defaultIframeAppConfig },
+      currentOpenConfig: {},
+      formElement: null,
+      allConfigureButtons: [],
+    }
 
-    return this.app;
+    return this.app
   }
 
   /**
    * Run on start up
    */
   init() {
-    const foundIframe = this.app.iframe != null;
-    const scripts = document.getElementsByTagName('script');
-    
-    const scriptsLen = scripts.length;
+    const foundIframe = this.app.iframe != null
+    const scripts = document.getElementsByTagName('script')
+
+    const scriptsLen = scripts.length
 
     for (let i = 0; i < scriptsLen; i++) {
-      const script = scripts[i];
-      if (script.hasAttribute('data-key') &&
-          script.hasAttribute('data-amount')) {
-        this.app.omiseScriptTag = script;
-        break;
+      const script = scripts[i]
+      if (
+        script.hasAttribute('data-key') &&
+        script.hasAttribute('data-amount')
+      ) {
+        this.app.omiseScriptTag = script
+        break
       }
     }
 
     if (!foundIframe && !this.isInsideIframeApp() && this.app.omiseScriptTag) {
-      this.createIframe();
-      this.app.omiseGenerateCheckoutButton = this.createOmiseCheckoutButton();
-      listenMessage(this);
+      this.createIframe()
+      this.app.omiseGenerateCheckoutButton = this.createOmiseCheckoutButton()
+      listenMessage(this)
     }
   }
 
@@ -118,7 +120,7 @@ export default class OmiseCard {
    * @return {object} current default config.
    */
   getDefaultConfig() {
-    return this.app.defaultConfig;
+    return this.app.defaultConfig
   }
 
   /**
@@ -126,7 +128,7 @@ export default class OmiseCard {
    * @return {Array} all configure buttons.
    */
   getAllConfigureButtons() {
-    return this.app.allConfigureButtons;
+    return this.app.allConfigureButtons
   }
 
   /**
@@ -134,29 +136,32 @@ export default class OmiseCard {
    * @param {String} token - omise token.
    */
   setTokenAtOmiseTokenField(token) {
-    const mergedConfig = { ...this.app.defaultConfig, ...this.app.currentOpenConfig };
-    const { submitAuto, onCreateTokenSuccess } = mergedConfig;
-    
+    const mergedConfig = {
+      ...this.app.defaultConfig,
+      ...this.app.currentOpenConfig,
+    }
+    const { submitAuto, onCreateTokenSuccess } = mergedConfig
+
     if (this.app.formElement) {
       if (this.isOmiseSource(token)) {
-        this.app.formElement.omiseSource.value = token;
+        this.app.formElement.omiseSource.value = token
       } else {
-        this.app.formElement.omiseToken.value = token;
+        this.app.formElement.omiseToken.value = token
       }
     }
 
     if (submitAuto === 'yes' && this.app.formElement) {
-      this.app.formElement.submit();
+      this.app.formElement.submit()
     }
 
-    (onCreateTokenSuccess || noop)(token);
+    ;(onCreateTokenSuccess || noop)(token)
 
     // clear current open config after submited
-    this.app.currentOpenConfig = {};
+    this.app.currentOpenConfig = {}
   }
 
   isOmiseSource(string) {
-    return /^src_/.test(string);
+    return /^src_/.test(string)
   }
 
   /**
@@ -165,37 +170,37 @@ export default class OmiseCard {
    * @return {Element} form element.
    */
   getFormByTarget(target) {
-    let currentNode = target;
+    let currentNode = target
 
     // travel DOM until found form tag
     while (currentNode && currentNode.tagName !== 'FORM') {
-      currentNode = currentNode.parentNode;
+      currentNode = currentNode.parentNode
     }
 
-    return currentNode;
+    return currentNode
   }
 
   /**
    * Create iframe at merchant page
    */
   createIframe() {
-    const iframe = document.createElement('iframe');
-    iframe.id = this.app.iframeAppId;
-    iframe.src = this.app.settings.cardUrl;
-    iframe.setAttribute('style', iframeDefaultStyle.join('; '));
-    document.body.appendChild(iframe);
+    const iframe = document.createElement('iframe')
+    iframe.id = this.app.iframeAppId
+    iframe.src = this.app.settings.cardUrl
+    iframe.setAttribute('style', iframeDefaultStyle.join('; '))
+    document.body.appendChild(iframe)
 
     iframe.onload = () => {
       if (this.app.iframe.style.display === 'block') {
         messageShowIframeAppForm(iframe.contentWindow, {
           config: this.app.configForIframeOnLoad,
-        });
+        })
       }
     }
 
-    this.app.iframe = iframe;
+    this.app.iframe = iframe
 
-    return this.app.iframe;
+    return this.app.iframe
   }
 
   /**
@@ -204,41 +209,44 @@ export default class OmiseCard {
    * @return {Element} hidden input element.
    */
   createHiddenInputForOmiseToken(target) {
-    let formElement = null;
+    let formElement = null
 
     if (target && target.tagName === 'FORM') {
-      formElement = target;
+      formElement = target
     }
 
     if (!formElement) {
-      throw new Error([
-        'Missing form element. Generate button or custom button must contain in form element.',
-        'https://github.com/omise/examples/blob/master/omise.js/example-4-custom-integration-multiple-buttons.html',
-        'Or setting submit form target',
-        'https://github.com/omise/examples/blob/master/omise.js/example-5-custom-integration-specify-checkout-form.html',
-      ].join('\n'));
+      throw new Error(
+        [
+          'Missing form element. Generate button or custom button must contain in form element.',
+          'https://github.com/omise/examples/blob/master/omise.js/example-4-custom-integration-multiple-buttons.html',
+          'Or setting submit form target',
+          'https://github.com/omise/examples/blob/master/omise.js/example-5-custom-integration-specify-checkout-form.html',
+        ].join('\n')
+      )
     }
 
-    let inputOmiseToken = formElement.querySelector('input[name="omiseToken"]');
+    let inputOmiseToken = formElement.querySelector('input[name="omiseToken"]')
 
     if (inputOmiseToken == null) {
-      inputOmiseToken = document.createElement('input');
-      inputOmiseToken.setAttribute('type', 'hidden');
-      inputOmiseToken.setAttribute('name', 'omiseToken');
-      formElement.appendChild(inputOmiseToken);
+      inputOmiseToken = document.createElement('input')
+      inputOmiseToken.setAttribute('type', 'hidden')
+      inputOmiseToken.setAttribute('name', 'omiseToken')
+      formElement.appendChild(inputOmiseToken)
     }
 
-    let inputOmiseSource = formElement.querySelector('input[name="omiseSource"]');
+    let inputOmiseSource = formElement.querySelector(
+      'input[name="omiseSource"]'
+    )
 
     if (inputOmiseSource == null) {
-      inputOmiseSource = document.createElement('input');
-      inputOmiseSource.setAttribute('type', 'hidden');
-      inputOmiseSource.setAttribute('name', 'omiseSource');
-      formElement.appendChild(inputOmiseSource);
+      inputOmiseSource = document.createElement('input')
+      inputOmiseSource.setAttribute('type', 'hidden')
+      inputOmiseSource.setAttribute('name', 'omiseSource')
+      formElement.appendChild(inputOmiseSource)
     }
 
-
-    return inputOmiseToken;
+    return inputOmiseToken
   }
 
   /**
@@ -248,49 +256,52 @@ export default class OmiseCard {
   createOmiseCheckoutButton() {
     const config = this.prepareConfig(
       extractDataFromElement(this.app.omiseScriptTag)
-    );
-    const checkoutButton = document.createElement('button');
-    checkoutButton.className = 'omise-checkout-button';
-    checkoutButton.innerHTML = config.buttonLabel;
+    )
+    const checkoutButton = document.createElement('button')
+    checkoutButton.className = 'omise-checkout-button'
+    checkoutButton.innerHTML = config.buttonLabel
 
-    const { omiseScriptTag } = this.app;
+    const { omiseScriptTag } = this.app
     if (omiseScriptTag) {
-      const formElement = this.getFormByTarget(omiseScriptTag);
-      this.app.formElement = formElement;
-      this.createHiddenInputForOmiseToken(formElement);
-    }
-    else {
-      console.warn('Missing Omise script tag');
+      const formElement = this.getFormByTarget(omiseScriptTag)
+      this.app.formElement = formElement
+      this.createHiddenInputForOmiseToken(formElement)
+    } else {
+      console.warn('Missing Omise script tag')
     }
 
     // bind button event.
-    checkoutButton.addEventListener('click', (event) => {
-      event.preventDefault();
+    checkoutButton.addEventListener(
+      'click',
+      event => {
+        event.preventDefault()
 
-      if (omiseScriptTag) {
-        const configFromScriptTag = extractDataFromElement(omiseScriptTag);
-        const config = this.prepareConfig(configFromScriptTag);
-        this.app.configForIframeOnLoad = { ...config };
-        this.open(config);
-      }
-      else {
-        console.warn('Missing Omise script tag');
-      }
-    }, false);
+        if (omiseScriptTag) {
+          const configFromScriptTag = extractDataFromElement(omiseScriptTag)
+          const config = this.prepareConfig(configFromScriptTag)
+          this.app.configForIframeOnLoad = { ...config }
+          this.open(config)
+        } else {
+          console.warn('Missing Omise script tag')
+        }
+      },
+      false
+    )
 
     // inject button next script tag.
-    omiseScriptTag
-        .parentNode
-        .insertBefore(checkoutButton, omiseScriptTag.nextSibling);
+    omiseScriptTag.parentNode.insertBefore(
+      checkoutButton,
+      omiseScriptTag.nextSibling
+    )
 
-    return checkoutButton;
+    return checkoutButton
   }
 
   /**
    * Checking omiseCard.js are running at Omise iframe app or not
    */
   isInsideIframeApp() {
-    return document.getElementById(this.app.iframeAppId) != null;
+    return document.getElementById(this.app.iframeAppId) != null
   }
 
   /**
@@ -299,7 +310,7 @@ export default class OmiseCard {
    * @return {Object} configure after merged and fix.
    */
   prepareConfig(newConfig) {
-    return merge(this.app.defaultConfig, fixConfigName(newConfig));
+    return merge(this.app.defaultConfig, fixConfigName(newConfig))
   }
 
   /**
@@ -308,16 +319,16 @@ export default class OmiseCard {
    * @return {object} default config.
    */
   configure(newConfig) {
-    this.app.defaultConfig = this.prepareConfig(newConfig);
+    this.app.defaultConfig = this.prepareConfig(newConfig)
 
     if (!this.isInsideIframeApp()) {
       if (!this.app.iframe) {
-        this.createIframe();
-        listenMessage(this);
+        this.createIframe()
+        listenMessage(this)
       }
     }
 
-    return this.app.defaultConfig;
+    return this.app.defaultConfig
   }
 
   /**
@@ -326,25 +337,25 @@ export default class OmiseCard {
    * @param  {Function} callback  - callback fire after iframe app opened.
    * @return result for open.
    */
-  open(newConfig = {}, callback = noop) {  
+  open(newConfig = {}, callback = noop) {
     if (!this.app.iframe) {
-      return false;
+      return false
     }
 
-    this.app.iframe.style.display = 'block';
+    this.app.iframe.style.display = 'block'
 
-    const config = this.prepareConfig(newConfig);
-    this.app.currentOpenConfig = { ...config };
-    
+    const config = this.prepareConfig(newConfig)
+    this.app.currentOpenConfig = { ...config }
+
     setTimeout(() => {
-      this.app.iframe.style.backgroundColor = 'rgba(0, 0, 0, .4)';
+      this.app.iframe.style.backgroundColor = 'rgba(0, 0, 0, .4)'
       messageShowIframeAppForm(this.app.iframe.contentWindow, {
         config,
-      });
-      callback(this.app.iframe);
-    });
-    
-    return true;
+      })
+      callback(this.app.iframe)
+    })
+
+    return true
   }
 
   /**
@@ -354,33 +365,33 @@ export default class OmiseCard {
    */
   close(callback = noop) {
     if (!this.app.iframe) {
-      return false;
+      return false
     }
-    
-    this.app.iframe.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+
+    this.app.iframe.style.backgroundColor = 'rgba(0, 0, 0, 0)'
     setTimeout(() => {
-      this.app.iframe.style.display = 'none';
-      callback(this.app.iframe);
+      this.app.iframe.style.display = 'none'
+      callback(this.app.iframe)
 
-      const { onFormClosed } = this.app.currentOpenConfig;
-      (onFormClosed || noop)(this.app.iframe);
-    }, 250);
+      const { onFormClosed } = this.app.currentOpenConfig
+      ;(onFormClosed || noop)(this.app.iframe)
+    }, 250)
 
-    return true;
+    return true
   }
 
   /**
    * Destroy iframe app
    */
   destroy() {
-    const iframe = document.getElementById(this.app.iframeAppId);
+    const iframe = document.getElementById(this.app.iframeAppId)
 
     if (this.app.iframe && iframe) {
-      const iframe = document.getElementById(this.app.iframeAppId);
-      document.body.removeChild(iframe);
+      const iframe = document.getElementById(this.app.iframeAppId)
+      document.body.removeChild(iframe)
 
       // reset app object to default
-      this.setup();
+      this.setup()
     }
   }
 
@@ -390,12 +401,12 @@ export default class OmiseCard {
   createParentFrameHandler() {
     return {
       closeIframe() {
-        messageCloseIframe();
+        messageCloseIframe()
       },
 
       closeAndSendToken(token) {
-        messageCloseAndSendToken(token);
-      }
+        messageCloseAndSendToken(token)
+      },
     }
   }
 
@@ -407,15 +418,15 @@ export default class OmiseCard {
    * @return {object} new button configure.
    */
   configureButton(buttonId, config) {
-    const configForButton = this.prepareConfig(config);
+    const configForButton = this.prepareConfig(config)
     const newButtonConfig = {
       buttonId,
       configuration: configForButton,
-    };
+    }
 
-    this.app.allConfigureButtons.push(newButtonConfig);
+    this.app.allConfigureButtons.push(newButtonConfig)
 
-    return newButtonConfig;
+    return newButtonConfig
   }
 
   /**
@@ -423,51 +434,53 @@ export default class OmiseCard {
    * Activate all configure buttons.
    */
   attach() {
-    const attachedButtons = [];
-    this.app.allConfigureButtons.forEach((item) => {
-      const { configuration } = item;
-      const button = document.querySelector(item.buttonId);
-      const defaultButtonText = this.app.defaultConfig.buttonLabel;
-      let buttonText = defaultButtonText;
+    const attachedButtons = []
+    this.app.allConfigureButtons.forEach(item => {
+      const { configuration } = item
+      const button = document.querySelector(item.buttonId)
+      const defaultButtonText = this.app.defaultConfig.buttonLabel
+      let buttonText = defaultButtonText
 
-      if (configuration.buttonLabel &&
-          buttonText !== configuration.buttonLabel
-         ) {
-        buttonText = configuration.buttonLabel;
-      }
-      else if (button.innerHTML) {
-        buttonText = button.innerHTML;
+      if (
+        configuration.buttonLabel &&
+        buttonText !== configuration.buttonLabel
+      ) {
+        buttonText = configuration.buttonLabel
+      } else if (button.innerHTML) {
+        buttonText = button.innerHTML
       }
 
-      button.innerHTML = buttonText;
-      
+      button.innerHTML = buttonText
+
       const { submitFormTarget } = this.app.defaultConfig
-      const formElement = (
-        submitFormTarget
+      const formElement = submitFormTarget
         ? document.querySelector(submitFormTarget)
         : this.getFormByTarget(button)
-      );
-      this.createHiddenInputForOmiseToken(formElement);
-      
-      button.addEventListener('click', (event) => {
-        event.preventDefault();
-        const { target } = event;
-        this.app.configForIframeOnLoad = configuration;
-        this.app.formElement = formElement;
-        this.open(configuration);
-      }, false);
+      this.createHiddenInputForOmiseToken(formElement)
 
-      attachedButtons.push(button);
-    });
+      button.addEventListener(
+        'click',
+        event => {
+          event.preventDefault()
+          const { target } = event
+          this.app.configForIframeOnLoad = configuration
+          this.app.formElement = formElement
+          this.open(configuration)
+        },
+        false
+      )
+
+      attachedButtons.push(button)
+    })
 
     if (!this.isInsideIframeApp()) {
       if (!this.app.iframe) {
-        this.createIframe();
-        listenMessage(this);
+        this.createIframe()
+        listenMessage(this)
       }
     }
 
-    return attachedButtons;
+    return attachedButtons
   }
 }
 
@@ -477,24 +490,23 @@ export default class OmiseCard {
  * @return {object} fix config.
  */
 export function fixConfigName(config) {
-  const fixConfig = {};
+  const fixConfig = {}
   const needToFixKeys = {
-    publicKey:        'key',
-    logo:             'image',
-    locationField:    'location',
-  };
+    publicKey: 'key',
+    logo: 'image',
+    locationField: 'location',
+  }
 
   // assign value and fix key
   for (const key in config) {
     // found key that need to fix
-    const correctKeyName = needToFixKeys[key];
+    const correctKeyName = needToFixKeys[key]
     if (correctKeyName) {
-      fixConfig[correctKeyName] = config[key];
-    }
-    else {
-      fixConfig[key] = config[key];
+      fixConfig[correctKeyName] = config[key]
+    } else {
+      fixConfig[key] = config[key]
     }
   }
 
-  return fixConfig;
+  return fixConfig
 }
