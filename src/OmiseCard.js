@@ -309,8 +309,9 @@ export default class OmiseCard {
    * @param {Object} newConfig     - new config for merge with default config.
    * @return {Object} configure after merged and fix.
    */
-  prepareConfig(newConfig) {
+  prepareConfig(newConfig = {}) {
     const { otherPaymentMethods } = newConfig
+
     if (otherPaymentMethods && typeof otherPaymentMethods == 'string') {
       newConfig.otherPaymentMethods = this.stringToArray(otherPaymentMethods)
     }
