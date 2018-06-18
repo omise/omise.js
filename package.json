@@ -49,6 +49,7 @@
     "cypress": "3.0.1",
     "eslint": "^3.10.2",
     "file-loader": "^0.8.5",
+    "husky": "^0.14.3",
     "jest": "^20.0.4",
     "lint-staged": "^7.2.0",
     "moment": "^2.18.1",

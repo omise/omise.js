@@ -178,7 +178,7 @@ describe('OmiseCard.js', () => {
       amount: 1234,
     }
     const expectedResult = {
-      key: 'pub_key_tesxxt_1234',
+      key: 'pub_key_test_1234',
       image: 'LOGO_URL',
       location: 'yes',
       amount: 1234,
