@@ -4,10 +4,9 @@
  * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
  */
 
-const path = require('path');
-const webpack = require('webpack');
-const CleanPlugin = require('clean-webpack-plugin');
-
+const path = require('path')
+const webpack = require('webpack')
+const CleanPlugin = require('clean-webpack-plugin')
 
 /**
  * --------------------------------------------------------
@@ -33,10 +32,7 @@ const config = {
   },
 
   resolve: {
-    modules: [
-      'src',
-      'node_modules',
-    ],
+    modules: ['src', 'node_modules'],
   },
 
   module: {
@@ -44,9 +40,11 @@ const config = {
       {
         test: /\.js$/,
         exclude: [/node_modules/],
-        use: [{
-          loader: 'babel-loader',
-        }],
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+        ],
       },
     ],
   },
@@ -55,10 +53,9 @@ const config = {
     new CleanPlugin('dist'),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify('development'),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
       },
     }),
-  ]
-};
-
-module.exports = config;
+  ],
+}
+module.exports = config

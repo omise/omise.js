@@ -116,8 +116,6 @@ export function verifyConfigStructure(config) {
     result.message = 'Missing valutUrl'
   } else if (!config.cardHost || !isUri(config.cardHost)) {
     result.message = 'Missing cardHost'
-  } else if (!config.cardUrl || !isUri(config.cardUrl)) {
-    result.message = 'Missing cardUrl'
   } else if (!config.interfaceUrl || !isUri(config.interfaceUrl)) {
     result.message = 'Missing interfaceUrl'
   }

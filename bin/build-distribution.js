@@ -3,17 +3,19 @@
  * Build distribution Omise.js
  * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
  */
-const fs = require('fs');
-const chalk = require('chalk');
-const { exec } = require('child_process');
-const moment = require('moment');
+const fs = require('fs')
+const chalk = require('chalk')
+const { exec } = require('child_process')
+const moment = require('moment')
 
-console.log(chalk.bgYellow('Start building Omise.js'));
-const env = process.env.NODE_ENV
-exec('npm run build', (err) => {
-  if (err) { return; }
+console.log(chalk.bgYellow('Start building Omise.js'))
 
-  const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+exec('npm run build', err => {
+  if (err) {
+    throw err
+  }
+
+  const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
 
   // add banner to script.
   const banner = `
@@ -23,26 +25,14 @@ exec('npm run build', (err) => {
    *
    * Date: ${moment().format('YYYY/MM/DD HH:mm')}
    */
-  `.trim();
+  `.trim()
 
-  let cdnUrl
-  if (env === 'staging') {
-    cdnUrl = 'https://cdn.dev-omise.co';
-  } else if (env === 'production') {
-    cdnUrl = 'https://cdn.omise.co';
-  } else {
-    cdnUrl = 'http://localhost:5002';
-  }
+  const payJs = fs.readFileSync('./dist/omise.js', 'utf8')
+  fs.writeFileSync('./dist/omise.js', `${banner}\n${payJs}`, 'utf8')
 
-  const payJs = fs.readFileSync('./dist/omise.js', 'utf8');
-  const pattern = new RegExp('http://localhost:5002', 'g');
-  const fixedPayJs = payJs.replace(pattern, cdnUrl);
-  fs.writeFileSync('./dist/omise.js', `${banner}\n${fixedPayJs}`, 'utf8');
-
-  console.log('\n');
-  console.log('---------------------------');
-  console.log('| Build omise.js success! |');
-  console.log('---------------------------');
-  console.log('\n');
-
-});
+  console.log('\n')
+  console.log('---------------------------')
+  console.log('| Build omise.js success! |')
+  console.log('---------------------------')
+  console.log('\n')
+})

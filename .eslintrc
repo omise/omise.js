@@ -4,6 +4,7 @@
     "browser": true,
     "node": true
   },
+  "plugins": ["react"],
   "rules": {
     "quotes": [2, "single"],
     "prefer-const": 2,
@@ -18,7 +19,7 @@
     "no-param-reassign": 2,
     "prefer-arrow-callback": 0,
     "arrow-spacing": 1,
-    "indent": [1, 2, {"SwitchCase": 1}],
+    "indent": [1, 2, { "SwitchCase": 1 }],
     "space-before-blocks": 1,
     "keyword-spacing": 1,
     "camelcase": 0,
