@@ -186,7 +186,7 @@ export default class OmiseCard {
   createIframe() {
     const iframe = document.createElement('iframe')
     iframe.id = this.app.iframeAppId
-    iframe.src = this.app.settings.cardUrl
+    iframe.src = `${this.app.settings.cardHost}/pay.html`
     iframe.setAttribute('style', iframeDefaultStyle.join('; '))
     document.body.appendChild(iframe)
 

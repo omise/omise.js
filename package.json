@@ -4,9 +4,9 @@
   "description": "New version of Omise.js",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "webpack-dev-server --hot --colors --progress",
-    "dev:production": "webpack-dev-server --hot --colors --progress --config=./webpack.config.production.js",
-    "build": "webpack -p --config=./webpack.config.production.js",
+    "start": "webpack-dev-server --hot --colors --progress --config webpack.dev.js",
+    "dev:production": "webpack-dev-server --hot --colors --progress --config=./webpack.prod.js",
+    "build": "webpack -p --config=./webpack.prod.js",
     "dist": "node ./bin/build-distribution.js",
     "test": "NODE_PATH=./:./src/ jest --no-cache",
     "test:watch": "npm test -- --watch",
@@ -60,6 +60,7 @@
     "webpack": "^2.3.3",
     "webpack-combine-loaders": "^2.0.3",
     "webpack-dev-server": "^2.4.2",
+    "webpack-merge": "^4.1.3",
     "whatwg-fetch": "^2.0.3"
   }
 }
