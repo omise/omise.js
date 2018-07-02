@@ -5,20 +5,14 @@
  */
 const fs = require('fs')
 const chalk = require('chalk')
-const { exec } = require('child_process')
 const moment = require('moment')
 
 console.log(chalk.bgYellow('Start building Omise.js'))
 
-exec('npm run build', err => {
-  if (err) {
-    throw err
-  }
+const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
 
-  const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
-
-  // add banner to script.
-  const banner = `
+// add banner to script.
+const banner = `
   /*!
    * OmiseJs v${packageJson.version}
    * Copyright: Omise
@@ -27,12 +21,11 @@ exec('npm run build', err => {
    */
   `.trim()
 
-  const payJs = fs.readFileSync('./dist/omise.js', 'utf8')
-  fs.writeFileSync('./dist/omise.js', `${banner}\n${payJs}`, 'utf8')
+const payJs = fs.readFileSync('./dist/omise.js', 'utf8')
+fs.writeFileSync('./dist/omise.js', `${banner}\n${payJs}`, 'utf8')
 
-  console.log('\n')
-  console.log('---------------------------')
-  console.log('| Build omise.js success! |')
-  console.log('---------------------------')
-  console.log('\n')
-})
+console.log('\n')
+console.log('---------------------------')
+console.log('| Build omise.js success! |')
+console.log('---------------------------')
+console.log('\n')

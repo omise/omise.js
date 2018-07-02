@@ -6,8 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --hot --colors --progress --config webpack.dev.js",
     "dev:production": "webpack-dev-server --hot --colors --progress --config=./webpack.prod.js",
-    "build": "webpack -p --config=./webpack.prod.js",
-    "dist": "node ./bin/build-distribution.js",
+    "build": "webpack -p --config=./webpack.prod.js && node ./bin/build-distribution.js",
     "test": "NODE_PATH=./:./src/ jest --no-cache",
     "test:watch": "npm test -- --watch",
     "cypress": "cypress",
