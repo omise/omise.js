@@ -149,4 +149,37 @@ describe('Omise Card', function() {
       })
     })
   })
+
+  context('full page otherPaymentMethod for econtext', () => {
+    it('Should show `Conveniece store` as APM label', () => {
+      cy.visit('/apm_full_page.html')
+      cy.get('button#checkout-button').click()
+      cy.get('iframe#omise-checkout-iframe-app').then($iframe => {
+        const $body = $iframe.contents().find('body')
+        cy.wrap($body)
+          .contains('Conveniece store')
+          .click()
+
+        cy.wrap($body)
+          .find('input[name="name"]')
+          .type('John')
+
+        cy.wrap($body)
+          .find('input[name="email"]')
+          .type('john@gmail.com')
+
+        cy.wrap($body)
+          .find('input[name="phone_number"]')
+          .type('1234567890')
+
+        cy.wrap($body)
+          .contains('Next')
+          .click()
+
+        cy.url()
+          .should('include', '/checkout.php')
+          .should('include', 'omiseSource=src_test_')
+      })
+    })
+  })
 })
