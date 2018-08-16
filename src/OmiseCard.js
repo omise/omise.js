@@ -25,7 +25,7 @@ export const defaultIframeAppConfig = {
   defaultPaymentMethod: 'credit_card',
   otherPaymentMethods: [],
   frameDescription: 'Secured by Omise',
-  submitLabel: 'Checkout',
+  submitLabel: 'Pay',
   buttonLabel: 'Pay with Omise',
   location: 'no',
   submitAuto: 'yes',
