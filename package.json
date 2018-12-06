@@ -11,8 +11,7 @@
     "test:watch": "npm test -- --watch",
     "cypress": "cypress",
     "e2e": "cypress run",
-    "cy:run": "cypress run",
-    "cy:open": "cypress open",
+    "e2e:open": "cypress open",
     "precommit": "lint-staged && npm test",
     "format": "prettier-eslint --write \"src/**/*.js\""
   },
