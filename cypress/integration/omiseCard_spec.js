@@ -151,13 +151,13 @@ describe('Omise Card', function() {
   })
 
   context('full page otherPaymentMethod for econtext', () => {
-    it('Should show `Conveniece store` as APM label', () => {
+    it('Should show `Convenience Store` as APM label', () => {
       cy.visit('/apm_full_page.html')
       cy.get('button#checkout-button').click()
       cy.get('iframe#omise-checkout-iframe-app').then($iframe => {
         const $body = $iframe.contents().find('body')
         cy.wrap($body)
-          .contains('Conveniece store')
+          .contains('Convenience Store')
           .click()
 
         cy.wrap($body)
@@ -179,6 +179,33 @@ describe('Omise Card', function() {
         cy.url()
           .should('include', '/checkout.php')
           .should('include', 'omiseSource=src_test_')
+      })
+    })
+  })
+
+  context('Translation', () => {
+    it('Should be translate other methods text when set locale to `jp`', () => {
+      cy.visit('/init_page.html')
+      cy.window().then(win => {
+        win.OmiseCard.configureButton('#checkout-button', {
+          submitFormTarget: '#creditcardForm',
+          defaultPaymentMethod: 'credit_card',
+          otherPaymentMethods: ['internet_banking', 'alipay'],
+          publicKey: 'pkey_test_5bgesov6ufhd884goy6',
+          amount: 2000,
+          currency: 'thb',
+          locale: 'ja',
+        })
+        win.OmiseCard.attach()
+        cy.get('button#checkout-button').click()
+      })
+      cy.get('iframe#omise-checkout-iframe-app').then($iframe => {
+        const $body = $iframe.contents().find('body')
+        cy.wrap($body)
+          .contains('他の決済手段')
+          .click()
+
+        cy.wrap($body).contains('他の決済手段')
       })
     })
   })
