@@ -45,13 +45,7 @@ describe('Omise Card', function() {
     cy.get('button.omise-checkout-button').click()
     cy.get('iframe#omise-checkout-iframe-app').then($iframe => {
       const $body = $iframe.contents().find('body')
-      cy.wrap($body)
-        .contains('Other Methods')
-        .click()
-
-      cy.wrap($body)
-        .find('.OmiseCheckoutForm_checkoutButton button')
-        .should('not.exist')
+      cy.wrap($body).should('not.contain', 'Other Methods')
     })
   })
 
@@ -135,10 +129,14 @@ describe('Omise Card', function() {
           .contains('Other Methods')
           .click()
 
-        cy.wrap($body).contains('Alipay')
+        cy.wrap($body).contains('Convenience Store')
 
         cy.wrap($body)
-          .contains('Bangkok Bank')
+          .contains('Alipay')
+          .click()
+
+        cy.wrap($body)
+          .contains('Pay with Alipay')
           .click()
 
         cy.wrap($body).wait(3000)
