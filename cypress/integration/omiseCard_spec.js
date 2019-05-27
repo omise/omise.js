@@ -29,7 +29,6 @@ describe('Omise Card', function() {
     cy.get('button.omise-checkout-button').click()
     cy.get('iframe#omise-checkout-iframe-app').then($iframe => {
       const $body = $iframe.contents().find('body')
-      console.log($body)
       checkoutCreditCard($body)
 
       cy.wrap($body).wait(3000)

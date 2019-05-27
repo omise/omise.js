@@ -1,55 +1,106 @@
 <html>
-
-<body>
-  <form class="checkout-form" name="checkoutForm" method="GET" action="/checkout.php">
-    <script type="text/javascript" src="http://localhost:5001/omise.js" data-key="pkey_test_5bgesov6ufhd884goy6" data-amount="10025"
-      data-button-label="Click to see an example">
-      </script>
-  </form>
-
-  <div class="row_pay_type">
-    <form id="creditcardForm" name="checkoutForm" method="GET" action="card.php">
-      <input type='hidden' name="transaction_type_id" value="1" />
-      <input type='hidden' name="access_token" value="2" />
-      <button type="submit" id="checkout-credit-card">บัตรเครดิต</button>
+  <body>
+    <form
+      class="checkout-form"
+      name="checkoutForm"
+      method="GET"
+      action="/checkout.php"
+    >
+      <script
+        type="text/javascript"
+        src="http://localhost:5001/omise.js"
+        data-key="pkey_test_5fotfu2yu93a7s8fo1c"
+        data-amount="10025"
+        data-button-label="Click to see an example"
+      ></script>
     </form>
+
+    <div class="row_pay_type">
+      <form
+        id="creditcardForm"
+        name="checkoutForm"
+        method="GET"
+        action="card.php"
+      >
+        <input type="hidden" name="transaction_type_id" value="1" />
+        <input type="hidden" name="access_token" value="2" />
+        <button type="submit" id="checkout-credit-card">บัตรเครดิต</button>
+      </form>
+    </div>
+
+    <div class="row_pay_type">
+      <form
+        id="internetBankingForm"
+        name="checkoutForm2"
+        method="GET"
+        action="banking.php"
+      >
+        <input type="hidden" name="transaction_type_id" value="1" />
+        <input type="hidden" name="access_token" value="2" />
+        <button type="submit" id="checkout-internet-banking">
+          Internet Banking
+        </button>
+
+        <button type="submit" id="checkout-internet-banking-2">
+          Internet Banking with indiviual bank
+        </button>
+
+        <button type="submit" id="checkout-internet-banking-3">
+          Internet Banking with indiviual bank and other payment
+        </button>
+      </form>
+    </div>
     <script>
+      const publicKey = 'pkey_test_5fotfu2yu93a7s8fo1c'
       OmiseCard.configureButton('#checkout-credit-card', {
-        submitFormTarget: "#creditcardForm",
+        submitFormTarget: '#creditcardForm',
         defaultPaymentMethod: 'credit_card',
-        publicKey: 'pkey_test_5bgesov6ufhd884goy6',
+        publicKey,
         amount: 2000,
         currency: 'thb',
         frameLabel: 'label',
         frameDescription: 'descirption',
         submitLabel: 'ชำระเงิน',
-        location: 'no'
-      });
-    </script>
-  </div>
+        location: 'no',
+      })
 
-  <div class="row_pay_type">
-    <form id="internetBankingForm" name="checkoutForm2" method="GET" action="banking.php">
-      <input type='hidden' name="transaction_type_id" value="1" />
-      <input type='hidden' name="access_token" value="2" />
-      <button type="submit" id="checkout-internet-banking">Internet Banking</button>
-    </form>
-    <script>
       OmiseCard.configureButton('#checkout-internet-banking', {
-        submitFormTarget: "#internetBankingForm",
+        submitFormTarget: '#internetBankingForm',
         defaultPaymentMethod: 'internet_banking',
-        publicKey: 'pkey_test_5bgesov6ufhd884goy6',
+        publicKey,
         amount: 2000,
         currency: 'thb',
         frameLabel: 'label',
         frameDescription: 'descirption',
         submitLabel: 'ชำระเงิน',
-        location: 'no'
-      });
-      OmiseCard.attach();
+        location: 'no',
+      })
+
+      OmiseCard.configureButton('#checkout-internet-banking-2', {
+        submitFormTarget: '#internetBankingForm',
+        defaultPaymentMethod: 'internet_banking(scb, ktb)',
+        publicKey,
+        amount: 2000,
+        currency: 'thb',
+        frameLabel: 'label',
+        frameDescription: 'descirption',
+        submitLabel: 'ชำระเงิน',
+        location: 'no',
+      })
+
+      OmiseCard.configureButton('#checkout-internet-banking-3', {
+        submitFormTarget: '#internetBankingForm',
+        defaultPaymentMethod: 'internet_banking(scb, ktb)',
+        otherPaymentMethods: ['internet_banking(scb)', 'alipay'],
+        publicKey,
+        amount: 2000,
+        currency: 'thb',
+        frameLabel: 'label',
+        frameDescription: 'descirption',
+        submitLabel: 'ชำระเงิน',
+        location: 'no',
+      })
+      OmiseCard.attach()
     </script>
-  </div>
-
-</body>
-
+  </body>
 </html>
