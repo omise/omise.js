@@ -29,7 +29,6 @@ describe('Omise Card', function() {
     cy.get('button.omise-checkout-button').click()
     cy.get('iframe#omise-checkout-iframe-app').then($iframe => {
       const $body = $iframe.contents().find('body')
-      console.log($body)
       checkoutCreditCard($body)
 
       cy.wrap($body).wait(3000)
@@ -113,6 +112,8 @@ describe('Omise Card', function() {
 
         checkoutCreditCard($body)
 
+        cy.wrap($body).wait(3000)
+
         cy.url()
           .should('include', '/checkout.php')
           .should('include', 'omiseToken=tokn_test_')
@@ -183,20 +184,8 @@ describe('Omise Card', function() {
 
   context('Translation', () => {
     it('Should be translate other methods text when set locale to `jp`', () => {
-      cy.visit('/init_page.html')
-      cy.window().then(win => {
-        win.OmiseCard.configureButton('#checkout-button', {
-          submitFormTarget: '#creditcardForm',
-          defaultPaymentMethod: 'credit_card',
-          otherPaymentMethods: ['internet_banking', 'alipay'],
-          publicKey: 'pkey_test_5bgesov6ufhd884goy6',
-          amount: 2000,
-          currency: 'thb',
-          locale: 'ja',
-        })
-        win.OmiseCard.attach()
-        cy.get('button#checkout-button').click()
-      })
+      cy.visit('/translation.html')
+      cy.get('button#checkout-button').click()
       cy.get('iframe#omise-checkout-iframe-app').then($iframe => {
         const $body = $iframe.contents().find('body')
         cy.wrap($body)

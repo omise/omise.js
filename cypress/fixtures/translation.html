@@ -9,6 +9,19 @@
   </form>
   </div>
 
+  <script>
+    OmiseCard.configureButton('#checkout-button', {
+          submitFormTarget: '#creditcardForm',
+          defaultPaymentMethod: 'credit_card',
+          otherPaymentMethods: ['internet_banking', 'alipay'],
+          publicKey: 'pkey_test_5bgesov6ufhd884goy6',
+          amount: 2000,
+          currency: 'thb',
+          locale: 'ja',
+    })
+    OmiseCard.attach();
+  </script>
+
 </body>
 
 </html>

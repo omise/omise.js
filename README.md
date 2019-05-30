@@ -186,5 +186,5 @@ yarn run e2e
 if you would like to run test runner GUI please use
 
 ```
-yarn run cy:open
+yarn run e2e:open
 ```
