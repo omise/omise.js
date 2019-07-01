@@ -9,7 +9,7 @@
       <script
         type="text/javascript"
         src="http://localhost:5001/omise.js"
-        data-key="pkey_test_5fotfu2yu93a7s8fo1c"
+        data-key="pkey_test_5fow8537s5f1ohi6xtc"
         data-amount="10025"
         data-button-label="Click to see an example"
       ></script>
@@ -48,10 +48,18 @@
         <button type="submit" id="checkout-internet-banking-3">
           Internet Banking with indiviual bank and other payment
         </button>
+
+        <button type="submit" id="checkout-installment-1">
+          Installment main payment method
+        </button>
+
+        <button type="submit" id="checkout-installment-2">
+          Installment other payment method
+        </button>
       </form>
     </div>
     <script>
-      const publicKey = 'pkey_test_5fotfu2yu93a7s8fo1c'
+      const publicKey = 'pkey_test_5fow8537s5f1ohi6xtc'
       OmiseCard.configureButton('#checkout-credit-card', {
         submitFormTarget: '#creditcardForm',
         defaultPaymentMethod: 'credit_card',
@@ -94,6 +102,31 @@
         otherPaymentMethods: ['internet_banking(scb)', 'alipay'],
         publicKey,
         amount: 2000,
+        currency: 'thb',
+        frameLabel: 'label',
+        frameDescription: 'descirption',
+        submitLabel: 'ชำระเงิน',
+        location: 'no',
+      })
+
+      OmiseCard.configureButton('#checkout-installment-1', {
+        submitFormTarget: '#internetBankingForm',
+        defaultPaymentMethod: 'installment',
+        publicKey,
+        amount: 300000,
+        currency: 'thb',
+        frameLabel: 'label',
+        frameDescription: 'descirption',
+        submitLabel: 'ชำระเงิน',
+        location: 'no',
+      })
+
+      OmiseCard.configureButton('#checkout-installment-2', {
+        submitFormTarget: '#internetBankingForm',
+        defaultPaymentMethod: 'credit_card',
+        otherPaymentMethods: 'installment',
+        publicKey,
+        amount: 300000,
         currency: 'thb',
         frameLabel: 'label',
         frameDescription: 'descirption',
