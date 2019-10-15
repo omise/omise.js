@@ -33,7 +33,7 @@ export const defaultIframeAppConfig = {
   cardBrands: 'visa mastercard',
   locale: 'en', // en,th,ja
   autoCardNumberFormat: 'yes', // yes,no
-  expiryDateStyle: '', // basic,
+  expiryDateStyle: '', // basic
   hideAmount: 'false', // false, true
 }
 
