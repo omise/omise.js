@@ -34,6 +34,7 @@ export const defaultIframeAppConfig = {
   locale: 'en', // en,th,ja
   autoCardNumberFormat: 'yes', // yes,no
   expiryDateStyle: '', // basic
+  hideAmount: 'false', // false, true
 }
 
 export const iframeDefaultStyle = [
