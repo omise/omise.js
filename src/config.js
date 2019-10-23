@@ -17,9 +17,9 @@ const config = {
     interfaceUrl: process.env.STAGING_INTERFACE_URL,
   },
   production: {
-    vaultUrl: process.env.PROD_VAULT_URL,
-    cardHost: process.env.PROD_CARD_HOST,
-    interfaceUrl: process.env.PROD_INTERFACE_URL,
+    vaultUrl: process.env.PRODUCTION_VAULT_URL,
+    cardHost: process.env.PRODUCTION_CARD_HOST,
+    interfaceUrl: process.env.PRODUCTION_INTERFACE_URL,
   },
 }
 
