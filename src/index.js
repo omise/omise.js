@@ -11,7 +11,7 @@ import config from './config'
 import Omise from './Omise'
 import OmiseCard from './OmiseCard'
 
-module.exports = Omise
+export default Omise
 
 global.Omise = new Omise(config)
 global.OmiseCard = new OmiseCard(config)
