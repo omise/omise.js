@@ -49,7 +49,7 @@
     "babel-preset-env": "^1.7.0",
     "chalk": "^2.0.1",
     "clean-webpack-plugin": "^0.1.9",
-    "cypress": "3.3.1",
+    "cypress": "3.4.1",
     "eslint": "^3.10.2",
     "file-loader": "^0.8.5",
     "husky": "^0.14.3",
