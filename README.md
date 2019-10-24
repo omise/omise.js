@@ -68,11 +68,7 @@ The Token is in `response.id`, send this token to your backend for creating a ch
 
 ```js
 // Given that you have a form element with an id of "card" in your page.
-var elements = document.getElementById('card').elements
-var card_form = {}
-for (var i = 0; i < elements.length; i++) {
-  card_form[elements[i].id] = elements[i];
-}
+var card_form = document.getElementById('card')
 
 // Serialize the card into a valid card object.
 var card = {
