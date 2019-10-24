@@ -56,7 +56,7 @@ If card authorization passed, `response.card.security_code_check` will be `true`
 The Token is in `response.id`, send this token to your backend for creating a charge using your secret key.
 
 ```html
-  <form id="card" name="checkoutForm" method="GET" action="checkout.php">
+  <form id="card" name="checkoutForm" method="POST" action="checkout.php">
     <input id="holder_name" type="text" />
     <input id="number" type="text" />
     <input id="expiration_month" type="number" />
