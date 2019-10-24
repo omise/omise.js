@@ -55,9 +55,24 @@ The following example shows you how to send the card data to Omise API and get a
 If card authorization passed, `response.card.security_code_check` will be `true`. If it's `false` you should ask user to check the card details.  
 The Token is in `response.id`, send this token to your backend for creating a charge using your secret key.
 
+```html
+  <form id="card" name="checkoutForm" method="GET" action="checkout.php">
+    <input id="holder_name" type="text" />
+    <input id="number" type="text" />
+    <input id="expiration_month" type="number" />
+    <input id="expiration_year" type="number" />
+    <input id="security_code" type="number" />
+    <button type="submit" id="checkoutButton">Checkout</button>
+  </form>
+```
+
 ```js
 // Given that you have a form element with an id of "card" in your page.
-var card_form = document.getElementById('card')
+var elements = document.getElementById('card').elements
+var card_form = {}
+for (var i = 0; i < elements.length; i++) {
+  card_form[elements[i].id] = elements[i];
+}
 
 // Serialize the card into a valid card object.
 var card = {
