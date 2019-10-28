@@ -5,8 +5,23 @@
  */
 
 const path = require('path')
+const fs = require('fs')
 const webpack = require('webpack')
 const CleanPlugin = require('clean-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
+const moment = require('moment')
+const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
+
+
+// add banner to script.
+const banner = `
+  /*!
+   * OmiseJs v${packageJson.version}
+   * Copyright: Omise
+   *
+   * Date: ${moment().format('YYYY/MM/DD HH:mm')}
+   */
+  `.trim()
 
 /**
  * --------------------------------------------------------
@@ -14,6 +29,7 @@ const CleanPlugin = require('clean-webpack-plugin')
  * --------------------------------------------------------
  */
 const config = {
+  devtool: 'inline-source-map',
   entry: './src/index.js',
   output: {
     filename: 'omise.js',
@@ -49,6 +65,14 @@ const config = {
     ],
   },
 
-  plugins: [new CleanPlugin('dist')],
+  plugins: [
+    new CleanPlugin('dist'),
+    new Dotenv(),
+    new webpack.BannerPlugin({
+      banner,
+      raw: true,
+    }),
+  ],
 }
+
 module.exports = config
