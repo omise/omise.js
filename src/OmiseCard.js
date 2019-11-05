@@ -53,7 +53,7 @@ export const iframeDefaultStyle = [
   'overflow-x: hidden',
   'overflow-y: auto',
   '-webkit-tap-highlight-color: transparent',
-  'transition: background-color .2s',
+  'transition: background-color 2s',
 ]
 
 const noop = () => {}
@@ -353,18 +353,17 @@ export default class OmiseCard {
       return false
     }
 
-    this.app.iframe.style.display = 'block'
-
     const config = this.prepareConfig(newConfig)
     this.app.currentOpenConfig = { ...config }
+    this.app.iframe.style.backgroundColor = 'rgba(0, 0, 0, .4)'
+    this.app.iframe.style.display = 'block'
 
     setTimeout(() => {
-      this.app.iframe.style.backgroundColor = 'rgba(0, 0, 0, .4)'
       messageShowIframeAppForm(this.app.iframe.contentWindow, {
         config,
       })
       callback(this.app.iframe)
-    })
+    }, 1500)
 
     return true
   }
