@@ -182,7 +182,6 @@ describe('OmiseCard.js', () => {
         expect(iframe.style.display).toEqual('none')
         expect(iframe.style.backgroundColor).toEqual('rgba(0, 0, 0, 0)')
       })
-      .catch(error => console.log(error))
   })
 
   test('should fix wrong config key correctly', () => {
