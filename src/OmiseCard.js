@@ -75,6 +75,7 @@ export default class OmiseCard {
     this.app = {
       settings: { ...settings },
       iframe: null,
+      iframeLoaded: false,
       omiseScriptTag: null,
       omiseGenerateCheckoutButton: null,
       iframeAppId: 'omise-checkout-iframe-app',
@@ -190,13 +191,13 @@ export default class OmiseCard {
     iframe.src = `${this.app.settings.cardHost}/pay.html`
     iframe.setAttribute('style', iframeDefaultStyle.join('; '))
     document.body.appendChild(iframe)
-
     iframe.onload = () => {
       if (this.app.iframe.style.display === 'block') {
         messageShowIframeAppForm(iframe.contentWindow, {
           config: this.app.configForIframeOnLoad,
         })
       }
+      this.app.iframeLoaded = true
     }
 
     this.app.iframe = iframe
@@ -353,19 +354,36 @@ export default class OmiseCard {
       return false
     }
 
-    this.app.iframe.style.display = 'block'
-
-    const config = this.prepareConfig(newConfig)
-    this.app.currentOpenConfig = { ...config }
-
-    setTimeout(() => {
+    const openIframeWithNewConfig = () => {
+      const config = this.prepareConfig(newConfig)
+      this.app.currentOpenConfig = { ...config }
       this.app.iframe.style.backgroundColor = 'rgba(0, 0, 0, .4)'
-      messageShowIframeAppForm(this.app.iframe.contentWindow, {
-        config,
+      this.app.iframe.style.display = 'block'
+      setTimeout(() => {
+        messageShowIframeAppForm(this.app.iframe.contentWindow, {
+          config,
+        })
+        callback(this.app.iframe)
       })
-      callback(this.app.iframe)
-    })
+    }
 
+    if (this.app.iframeLoaded) {
+      openIframeWithNewConfig()
+    } else {
+      const observeTimeout = 3000
+      const observeDelay = 100
+      let observeCount = 0
+
+      const observeTimer = setInterval(() => {
+        observeCount += observeDelay
+        if (observeCount >= observeTimeout || this.app.iframeLoaded) {
+          if (this.app.iframeLoaded) {
+            openIframeWithNewConfig()
+          }
+          clearInterval(observeTimer)
+        }
+      }, observeDelay)
+    }
     return true
   }
 
@@ -380,10 +398,10 @@ export default class OmiseCard {
     }
 
     this.app.iframe.style.backgroundColor = 'rgba(0, 0, 0, 0)'
+
     setTimeout(() => {
       this.app.iframe.style.display = 'none'
       callback(this.app.iframe)
-
       const { onFormClosed } = this.app.currentOpenConfig
       ;(onFormClosed || noop)(this.app.iframe)
     }, 250)

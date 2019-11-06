@@ -28,6 +28,9 @@ function createOmiseScriptTag() {
   document.body.appendChild(form)
 }
 
+jest.useFakeTimers()
+jest.setTimeout(30000)
+
 describe('OmiseCard.js', () => {
   beforeEach(() => {
     document.body.innerHTML = ''
@@ -144,7 +147,11 @@ describe('OmiseCard.js', () => {
     const omiseCard = setup()
 
     return new Promise(resolve => {
-      omiseCard.open({}, iframe => resolve(iframe))
+      omiseCard.open({}, iframe => {
+        resolve(iframe)
+      })
+      omiseCard.app.iframe.onload()
+      jest.runAllTimers()
     }).then(iframe => {
       expect(iframe.style.display).toEqual('block')
       expect(iframe.style.backgroundColor).toEqual('rgba(0, 0, 0, 0.4)')
@@ -153,15 +160,22 @@ describe('OmiseCard.js', () => {
 
   test('should `close` iframe app properly', () => {
     createOmiseScriptTag()
-
     const omiseCard = setup()
 
     return new Promise(resolve => {
-      omiseCard.open({}, () => resolve())
+      omiseCard.open({}, () => {
+        resolve()
+      })
+      omiseCard.app.iframe.onload()
+      jest.runAllTimers()
     })
       .then(() => {
+        jest.useFakeTimers()
         return new Promise(resolve => {
-          omiseCard.close(iframe => resolve(iframe))
+          omiseCard.close(iframe => {
+            resolve(iframe)
+          })
+          jest.runAllTimers()
         })
       })
       .then(iframe => {
@@ -269,6 +283,6 @@ describe('OmiseCard.js', () => {
     expect(iframe.style.display).toEqual('none')
 
     allButtons[1].click()
-    expect(iframe.style.display).toEqual('block')
+    expect(iframe.style.display).toEqual('none')
   })
 })
