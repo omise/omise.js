@@ -53,7 +53,7 @@ export const iframeDefaultStyle = [
   'overflow-x: hidden',
   'overflow-y: auto',
   '-webkit-tap-highlight-color: transparent',
-  'transition: background-color 2s',
+  'transition: background-color .2s',
 ]
 
 const noop = () => {}
