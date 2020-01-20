@@ -321,8 +321,15 @@ export default class OmiseCard {
     return merge(this.app.defaultConfig, fixConfigName(newConfig))
   }
 
+  /**
+   * Split a given string into an array
+   * String format "text1, text2(text3), text4(text5, text6)"
+   * @param {string} str
+   * @returns {array} - Returns an array
+   */
   stringToArray(str) {
-    return str.split(',').map(s => s.trim())
+    const arr = str.match(/[\w_]+(\([^)]+\))?/g) || []
+    return arr
   }
 
   /**
