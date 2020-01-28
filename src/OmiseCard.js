@@ -323,9 +323,7 @@ export default class OmiseCard {
         newConfig.otherPaymentMethods.length > 0
       ) {
         newConfig.otherPaymentMethods = newConfig.otherPaymentMethods.filter(
-          method => {
-            return !newConfig.defaultPaymentMethod.includes(method)
-          }
+          method => !newConfig.defaultPaymentMethod.includes(method)
         )
       }
     }
