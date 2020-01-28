@@ -316,6 +316,18 @@ export default class OmiseCard {
 
     if (otherPaymentMethods && typeof otherPaymentMethods == 'string') {
       newConfig.otherPaymentMethods = this.stringToArray(otherPaymentMethods)
+
+      // Ignore default payment method in other payment methods
+      if (
+        newConfig.defaultPaymentMethod &&
+        newConfig.otherPaymentMethods.length > 0
+      ) {
+        newConfig.otherPaymentMethods = newConfig.otherPaymentMethods.filter(
+          method => {
+            return !newConfig.defaultPaymentMethod.includes(method)
+          }
+        )
+      }
     }
 
     return merge(this.app.defaultConfig, fixConfigName(newConfig))
