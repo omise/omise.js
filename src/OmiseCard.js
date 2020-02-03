@@ -326,6 +326,24 @@ export default class OmiseCard {
           method => !newConfig.defaultPaymentMethod.includes(method)
         )
       }
+
+      // Set the default method to the only provided other method
+      if (
+        !newConfig.defaultPaymentMethod &&
+        newConfig.otherPaymentMethods.length === 1
+      ) {
+        newConfig.defaultPaymentMethod = newConfig.otherPaymentMethods[0]
+        newConfig.otherPaymentMethods = []
+      }
+
+      // Set the first other payment method as default if default method not provided
+      if (
+        !newConfig.defaultPaymentMethod &&
+        newConfig.otherPaymentMethods.length > 1 &&
+        !newConfig.otherPaymentMethods.includes('credit_card')
+      ) {
+        newConfig.defaultPaymentMethod = newConfig.otherPaymentMethods.shift()
+      }
     }
 
     return merge(this.app.defaultConfig, fixConfigName(newConfig))

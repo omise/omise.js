@@ -210,7 +210,8 @@ describe('OmiseCard.js', () => {
       key: 'pub_key_test_1234',
       a: 1,
       b: 2,
-      otherPaymentMethods: ['a', 'b', 'c'],
+      defaultPaymentMethod: 'a',
+      otherPaymentMethods: ['b', 'c'],
     })
     const expectedResult = omiseCard.prepareConfig({
       publicKey: 'pub_key_test_1234',
