@@ -210,14 +210,14 @@ describe('OmiseCard.js', () => {
       key: 'pub_key_test_1234',
       a: 1,
       b: 2,
-      defaultPaymentMethod: 'a',
-      otherPaymentMethods: ['b', 'c'],
+      otherPaymentMethods: ['b'],
     })
     const expectedResult = omiseCard.prepareConfig({
       publicKey: 'pub_key_test_1234',
       a: 1,
       b: 2,
-      otherPaymentMethods: 'a, b ,  c',
+      defaultPaymentMethod: 'credit_card',
+      otherPaymentMethods: 'a, b, c',
     })
 
     expect(result).toEqual(expectedResult)
@@ -285,5 +285,48 @@ describe('OmiseCard.js', () => {
 
     allButtons[1].click()
     expect(iframe.style.display).toEqual('none')
+  })
+
+  test('should set the default payment method to `credit_card`', () => {
+    const omiseCard = setup()
+    const defaultConfig = omiseCard.getDefaultConfig()
+
+    expect(defaultConfig).toEqual(omiseCard.prepareConfig())
+
+    const result = Object.assign({}, defaultConfig, {
+      key: 'pub_key_test_1234',
+      a: 1,
+      b: 2,
+      defaultPaymentMethod: 'credit_card',
+    })
+    const expectedResult = omiseCard.prepareConfig({
+      publicKey: 'pub_key_test_1234',
+      a: 1,
+      b: 2,
+    })
+
+    expect(result.defaultPaymentMethod).toEqual(expectedResult.defaultPaymentMethod)
+  })
+
+  test('should set the default method to the only provide other methods', () => {
+    const omiseCard = setup()
+    const defaultConfig = omiseCard.getDefaultConfig()
+
+    expect(defaultConfig).toEqual(omiseCard.prepareConfig())
+
+    const result = Object.assign({}, defaultConfig, {
+      key: 'pub_key_test_1234',
+      a: 1,
+      b: 2,
+      defaultPaymentMethod: 'a',
+    })
+    const expectedResult = omiseCard.prepareConfig({
+      publicKey: 'pub_key_test_1234',
+      a: 1,
+      b: 2,
+      otherPaymentMethods: 'a',
+    })
+
+    expect(result.defaultPaymentMethod).toEqual(expectedResult.defaultPaymentMethod)
   })
 })

@@ -339,10 +339,9 @@ export default class OmiseCard {
       // Set the first other payment method as default if default method not provided
       if (
         !newConfig.defaultPaymentMethod &&
-        newConfig.otherPaymentMethods.length > 1 &&
-        !newConfig.otherPaymentMethods.includes('credit_card')
+        newConfig.otherPaymentMethods.length > 1
       ) {
-        newConfig.defaultPaymentMethod = newConfig.otherPaymentMethods.shift()
+        newConfig.defaultPaymentMethod = ''
       }
     }
 
