@@ -200,28 +200,6 @@ describe('OmiseCard.js', () => {
     expect(fixConfigName(config)).toEqual(expectedResult)
   })
 
-  test('should prepare config correctly', () => {
-    const omiseCard = setup()
-    const defaultConfig = omiseCard.getDefaultConfig()
-
-    expect(defaultConfig).toEqual(omiseCard.prepareConfig())
-
-    const result = Object.assign({}, defaultConfig, {
-      key: 'pub_key_test_1234',
-      a: 1,
-      b: 2,
-      otherPaymentMethods: ['a', 'b', 'c'],
-    })
-    const expectedResult = omiseCard.prepareConfig({
-      publicKey: 'pub_key_test_1234',
-      a: 1,
-      b: 2,
-      otherPaymentMethods: 'a, b ,  c',
-    })
-
-    expect(result).toEqual(expectedResult)
-  })
-
   test('should set new default config corectly', () => {
     const omiseCard = setup()
     const result = omiseCard.configure({
@@ -284,5 +262,62 @@ describe('OmiseCard.js', () => {
 
     allButtons[1].click()
     expect(iframe.style.display).toEqual('none')
+  })
+
+  describe('should prepare config correctly', () => {
+    test('should use first item of other payment methods as default if do not specify a default method', () => {
+      const omiseCard = setup()
+      const config = omiseCard.prepareConfig({
+        otherPaymentMethods: ['installment', 'internet_banking'],
+      })
+      const result = {
+        ...config,
+        defaultPaymentMethod: 'installment',
+        otherPaymentMethods: ['internet_banking'],
+      }
+
+      expect(config).toEqual(result)
+    })
+
+    test('should use other payment methods as default payment method instead if do not specify a default method', () => {
+      const omiseCard = setup()
+      const config = omiseCard.prepareConfig({
+        otherPaymentMethods: ['installment'],
+      })
+      const result = {
+        ...config,
+        defaultPaymentMethod: 'installment',
+        otherPaymentMethods: [],
+      }
+
+      expect(config).toEqual(result)
+    })
+
+    test('should ignore default payment method in other payment methods', () => {
+      const omiseCard = setup()
+      const config = omiseCard.prepareConfig({
+        defaultPaymentMethod: 'credit_card',
+        otherPaymentMethods: ['installment', 'credit_card', 'internet_banking'],
+      })
+      const result = {
+        ...config,
+        defaultPaymentMethod: 'credit_card',
+        otherPaymentMethods: ['installment', 'internet_banking'],
+      }
+
+      expect(config).toEqual(result)
+    })
+
+    test('should credit card be shown by default if neither ‘default‘ nor ‘others‘ method is set', () => {
+      const omiseCard = setup()
+      const config = omiseCard.prepareConfig()
+      const result = {
+        ...config,
+        defaultPaymentMethod: 'credit_card',
+        otherPaymentMethods: [],
+      }
+
+      expect(config).toEqual(result)
+    })
   })
 })
