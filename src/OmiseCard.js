@@ -22,7 +22,7 @@ export const defaultIframeAppConfig = {
   currency: 'THB', // THB,USD,JPY
   image: 'https://cdn.omise.co/assets/frontend-images/store-logo.svg',
   frameLabel: 'Omise',
-  defaultPaymentMethod: 'credit_card',
+  defaultPaymentMethod: '',
   otherPaymentMethods: [],
   frameDescription: 'Secured by Omise',
   submitLabel: 'Pay',
@@ -314,11 +314,31 @@ export default class OmiseCard {
   prepareConfig(newConfig = {}) {
     const { otherPaymentMethods } = newConfig
 
-    if (otherPaymentMethods && typeof otherPaymentMethods == 'string') {
+    if (otherPaymentMethods && typeof otherPaymentMethods === 'string') {
       newConfig.otherPaymentMethods = this.stringToArray(otherPaymentMethods)
     }
 
+    const hasDefaultPaymentMethod = !this.isEmpty(
+      newConfig.defaultPaymentMethod
+    )
+    const hasOtherPaymentMethods = !this.isEmpty(newConfig.otherPaymentMethods)
+
+    if (hasDefaultPaymentMethod && hasOtherPaymentMethods) {
+      newConfig.otherPaymentMethods = newConfig.otherPaymentMethods.filter(
+        method => newConfig.defaultPaymentMethod !== method
+      )
+    } else if (!hasDefaultPaymentMethod && hasOtherPaymentMethods) {
+      newConfig.defaultPaymentMethod = newConfig.otherPaymentMethods[0]
+      newConfig.otherPaymentMethods = newConfig.otherPaymentMethods.slice(1)
+    } else if (!hasDefaultPaymentMethod && !hasOtherPaymentMethods) {
+      newConfig.defaultPaymentMethod = 'credit_card'
+    }
+
     return merge(this.app.defaultConfig, fixConfigName(newConfig))
+  }
+
+  isEmpty(str) {
+    return str === '' || str == null || (str.length && str.length === 0)
   }
 
   /**
