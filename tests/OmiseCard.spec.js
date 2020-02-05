@@ -265,7 +265,20 @@ describe('OmiseCard.js', () => {
   })
 
   describe('should prepare config correctly', () => {
-    test('should use first item of other payment methods as default if do not specify a default method', () => {
+    test('should not display list for select payment method by default', () => {
+      const omiseCard = setup()
+      const defaultConfig = omiseCard.getDefaultConfig()
+      const config = omiseCard.prepareConfig()
+      const result = {
+        ...defaultConfig,
+        defaultPaymentMethod: 'credit_card',
+        __useOtherPaymentMethodsListAsDefault: undefined,
+      }
+
+      expect(config).toEqual(result)
+    })
+
+    test('should use other payment methods to display list for select payment method', () => {
       const omiseCard = setup()
       const config = omiseCard.prepareConfig({
         otherPaymentMethods: ['installment', 'internet_banking'],
@@ -273,7 +286,8 @@ describe('OmiseCard.js', () => {
       const result = {
         ...config,
         defaultPaymentMethod: 'installment',
-        otherPaymentMethods: ['internet_banking'],
+        otherPaymentMethods: ['installment', 'internet_banking'],
+        __useOtherPaymentMethodsListAsDefault: true,
       }
 
       expect(config).toEqual(result)

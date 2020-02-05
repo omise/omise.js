@@ -328,8 +328,13 @@ export default class OmiseCard {
         method => newConfig.defaultPaymentMethod !== method
       )
     } else if (!hasDefaultPaymentMethod && hasOtherPaymentMethods) {
-      newConfig.defaultPaymentMethod = newConfig.otherPaymentMethods[0]
-      newConfig.otherPaymentMethods = newConfig.otherPaymentMethods.slice(1)
+      if (newConfig.otherPaymentMethods.length === 1) {
+        newConfig.defaultPaymentMethod = newConfig.otherPaymentMethods[0]
+        newConfig.otherPaymentMethods = []
+      } else {
+        newConfig.defaultPaymentMethod = newConfig.otherPaymentMethods[0]
+        newConfig.__useOtherPaymentMethodsListAsDefault = true
+      }
     } else if (!hasDefaultPaymentMethod && !hasOtherPaymentMethods) {
       newConfig.defaultPaymentMethod = 'credit_card'
     }
