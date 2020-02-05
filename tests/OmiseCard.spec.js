@@ -278,14 +278,14 @@ describe('OmiseCard.js', () => {
       expect(config).toEqual(result)
     })
 
-    test('should use other payment methods to display list for select payment method', () => {
+    test('should use other payment methods to display list for select payment method when only has other method is specify', () => {
       const omiseCard = setup()
       const config = omiseCard.prepareConfig({
         otherPaymentMethods: ['installment', 'internet_banking'],
       })
       const result = {
         ...config,
-        defaultPaymentMethod: 'installment',
+        defaultPaymentMethod: '',
         otherPaymentMethods: ['installment', 'internet_banking'],
         __useOtherPaymentMethodsListAsDefault: true,
       }
