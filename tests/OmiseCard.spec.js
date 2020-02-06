@@ -287,7 +287,6 @@ describe('OmiseCard.js', () => {
         ...config,
         defaultPaymentMethod: '',
         otherPaymentMethods: ['installment', 'internet_banking'],
-        __useOtherPaymentMethodsListAsDefault: true,
       }
 
       expect(config).toEqual(result)
