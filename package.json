@@ -1,5 +1,5 @@
 {
-  "name": "ratchagarn-omise.js",
+  "name": "omise.js",
   "version": "2.5.1",
   "description": "New version of Omise.js",
   "main": "webpack.config.js",
@@ -29,14 +29,19 @@
   "jest": {
     "verbose": true
   },
-  "repository": {
-    "type": "git",
-    "url": "git@git.omise.co:ratchagarn/omise.js.git"
-  },
   "keywords": [
     "Omise.js"
   ],
-  "author": "Ratchagarn Naewbuntad",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:omise/omise.js.git"
+  },
+  "author": "Omise <support@omise.co> (https://omise.co/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/omise/omise.js/issues"
+  },
+  "homepage": "https://github.com/omise/omise.js",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.6.4",
