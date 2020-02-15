@@ -318,10 +318,8 @@ export default class OmiseCard {
       newConfig.otherPaymentMethods = this.stringToArray(otherPaymentMethods)
     }
 
-    const hasDefaultPaymentMethod = !this.isEmpty(
-      newConfig.defaultPaymentMethod
-    )
-    const hasOtherPaymentMethods = !this.isEmpty(newConfig.otherPaymentMethods)
+    const hasDefaultPaymentMethod = !isEmpty(newConfig.defaultPaymentMethod)
+    const hasOtherPaymentMethods = !isEmpty(newConfig.otherPaymentMethods)
 
     if (hasDefaultPaymentMethod && hasOtherPaymentMethods) {
       newConfig.otherPaymentMethods = newConfig.otherPaymentMethods.filter(
@@ -339,10 +337,6 @@ export default class OmiseCard {
     }
 
     return merge(this.app.defaultConfig, fixConfigName(newConfig))
-  }
-
-  isEmpty(str) {
-    return str === '' || str == null || (str.length && str.length === 0)
   }
 
   /**

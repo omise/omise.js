@@ -21,7 +21,7 @@ export function safeJsonParse(str) {
 }
 
 export function isEmpty(value) {
-  return value == null || value === '' ? true : false
+  return value === '' || value == null || (value.length && value.length === 0)
 }
 
 /**
