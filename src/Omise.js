@@ -113,7 +113,7 @@ export function verifyConfigStructure(config) {
   }
 
   if (!config.vaultUrl || !isUri(config.vaultUrl)) {
-    result.message = 'Missing valutUrl'
+    result.message = 'Missing vaultUrl'
   } else if (!config.cardHost || !isUri(config.cardHost)) {
     result.message = 'Missing cardHost'
   } else if (!config.interfaceUrl || !isUri(config.interfaceUrl)) {
