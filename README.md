@@ -52,7 +52,6 @@ With the following browsers operate in compatibility mode:
 ### Example
 
 The following example shows you how to send the card data to Omise API and get a token back.  
-If card authorization passed, `response.card.security_code_check` will be `true`. If it's `false` you should ask user to check the card details.  
 The Token is in `response.id`, send this token to your backend for creating a charge using your secret key.
 
 ```html
