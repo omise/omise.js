@@ -75,4 +75,7 @@ const config = {
   ],
 }
 
-module.exports = config
+module.exports = {
+  webpackConfig: config,
+  devBlocks: ['dev']
+}

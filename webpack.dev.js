@@ -2,7 +2,7 @@ const merge = require('webpack-merge')
 const webpack = require('webpack')
 const common = require('./webpack.common.js')
 
-const config = merge(common, {
+const config = merge(common.webpackConfig, {
   devtool: 'inline-source-map',
   devServer: {
     disableHostCheck: true,
