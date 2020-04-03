@@ -6,33 +6,39 @@
 import { isUri } from 'valid-url'
 import 'whatwg-fetch'
 
-export default class Omise {
-  constructor(config) {
-    const result = verifyConfigStructure(config)
-    if (result.error) {
-      throw new Error(result.message)
-    }
+export default function OmiseFactory(config) {
+  /* dev:start */
+  console.log('Development mode')
+  /* dev:end */
 
-    this.config = config
-    this.publicKey = null
-    this._rpc = null
-  }
+  const result = verifyConfigStructure(config)
+  if (result.error) throw new Error(result.message)
 
-  _createRpc(callback) {
-    if (this._rpc) {
-      return this._rpc
+  const RPC_TIMEOUT = 30000
+
+  let // Public interface
+    Omise = {
+      config,
+      publicKey: null,
+      setPublicKey,
+      createSource,
+      createToken,
+    },
+    // Private
+    _rpc = null
+
+  function _createRpc(callback) {
+    if (_rpc) {
+      return _rpc
     } else {
-      const { vaultUrl } = this.config
+      const { vaultUrl } = Omise.config
       const tm = setTimeout(() => {
-        this._rpc.destroy()
-        this._rpc = null
+        _rpc.destroy()
+        _rpc = null
+        callback && callback()
+      }, RPC_TIMEOUT)
 
-        if (callback) {
-          callback()
-        }
-      }, 30000)
-
-      this._rpc = new easyXDM.Rpc(
+      _rpc = new easyXDM.Rpc(
         {
           remote: `${vaultUrl}/provider`,
           onReady() {
@@ -46,21 +52,21 @@ export default class Omise {
         }
       )
 
-      return this._rpc
+      return _rpc
     }
   }
 
-  setPublicKey(publicKey) {
-    this.publicKey = publicKey
-    return this.publicKey
+  function setPublicKey(publicKey) {
+    Omise.publicKey = publicKey
+    return Omise.publicKey
   }
 
-  createSource(type, options, callback) {
-    const auth = btoa(this.publicKey)
+  function createSource(type, options, callback) {
+    const auth = btoa(Omise.publicKey)
 
     options.type = type
 
-    const url = `${this.config.interfaceUrl}/sources/`
+    const url = `${Omise.config.interfaceUrl}/sources/`
     fetch(url, {
       method: 'post',
       headers: {
@@ -80,17 +86,15 @@ export default class Omise {
       })
   }
 
-  createToken(as, attributes, handler) {
-    const data = {}
-    data[as] = attributes
-
-    this._createRpc(() => {
+  function createToken(as, attributes, handler) {
+    const data = { [as]: attributes }
+    _createRpc(() => {
       handler(0, {
         code: 'rpc_error',
         message: 'unable to connect to provider after timeout',
       })
     }).createToken(
-      this.publicKey,
+      Omise.publicKey,
       data,
       response => {
         handler(response.status, response.data)
@@ -100,6 +104,8 @@ export default class Omise {
       }
     )
   }
+
+  return Omise
 }
 
 /**

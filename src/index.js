@@ -8,10 +8,10 @@ import 'helpers/polyfill'
 import 'vendors/easyXDM.js'
 
 import config from './config'
-import Omise from './Omise'
+import OmiseFactory from './Omise'
 import OmiseCard from './OmiseCard'
 
-export default Omise
+export default OmiseFactory
 
-global.Omise = new Omise(config)
+global.Omise = OmiseFactory(config)
 global.OmiseCard = new OmiseCard(config)
