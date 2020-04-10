@@ -87,7 +87,6 @@ export default function OmiseFactory(config) {
         error: error.message
       })
     });
-
   }
 
   function createToken(as, attributes, handler) {
@@ -106,7 +105,6 @@ export default function OmiseFactory(config) {
   }
 
   return Omise;
-
 }
 
 /**
