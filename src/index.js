@@ -20,3 +20,4 @@ console.log('Development mode');
 
 global.Omise = OmiseFactory(config);
 global.OmiseCard = OmiseCardFactory(config);
+

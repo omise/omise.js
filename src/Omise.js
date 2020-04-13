@@ -16,7 +16,8 @@ export default function OmiseFactory(config) {
 
   let
 
-    // Public interface
+  //----------------- Public interface
+
     Omise = {
       config,
       publicKey: null,
@@ -25,10 +26,12 @@ export default function OmiseFactory(config) {
       createToken
     },
 
-    // Private
+  // ------------------ Private vars
+
     _rpc = null
 
   ;
+
 
   function _createRpc(callback) {
     if (_rpc) {
@@ -114,18 +117,18 @@ export default function OmiseFactory(config) {
 export function verifyConfigStructure(config) {
   const result = {
     error: false,
-    message: '',
-  }
+    message: ''
+  };
 
   if (!config.vaultUrl || !isUri(config.vaultUrl)) {
-    result.message = 'Missing vaultUrl'
+    result.message = 'Missing vaultUrl';
   } else if (!config.cardHost || !isUri(config.cardHost)) {
-    result.message = 'Missing cardHost'
+    result.message = 'Missing cardHost';
   } else if (!config.interfaceUrl || !isUri(config.interfaceUrl)) {
-    result.message = 'Missing interfaceUrl'
+    result.message = 'Missing interfaceUrl';
   }
 
-  result.error = result.message !== ''
+  result.error = result.message !== '';
 
-  return result
+  return result;
 }

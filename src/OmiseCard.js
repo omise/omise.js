@@ -58,46 +58,49 @@ export const iframeDefaultStyle = [
 
 const noop = () => {};
 
-export default function OmiseCardFactory(settings, initWhenStart) {
+export default function OmiseCardFactory(settings, initWhenStart = true) {
 
   const ID_IFRAME_APP = 'omise-checkout-iframe-app';
 
   let OmiseCard;
 
+
   //----------------- Public interface
 
-  OmiseCard = {
-    attach,
-    configure,
-    configureButton,
-    open,
-    close,
-    setTokenAtOmiseTokenField
-  }
+    OmiseCard = {
+      attach,
+      configure,
+      configureButton,
+      open,
+      close,
+      setTokenAtOmiseTokenField,
+      createParentFrameHandler
+    };
 
   /* dev:start */
 
-  //------------------ Expose private members for test suite
+  //------------------ Expose private members for use in test suite
 
-  OmiseCard = {
-    ...OmiseCard,
-    app: _app,
-    ////// get app() { return _app; },
-    getDefaultConfig: _getDefaultConfig,
-    getAllConfigureButtons: _getAllConfigureButtons,
-    getFormByTarget: _getFormByTarget,
-    createIframe: _createIframe,
-    createHiddenInputForOmiseToken: _createHiddenInputForOmiseToken,
-    isInsideIframeApp: _isInsideIframeApp,
-    prepareConfig: _prepareConfig,
-    destroy: _destroy
-  };
+    OmiseCard = {
+      ...OmiseCard,
+      get app() { return _app; },
+      getDefaultConfig: _getDefaultConfig,
+      getAllConfigureButtons: _getAllConfigureButtons,
+      getFormByTarget: _getFormByTarget,
+      createIframe: _createIframe,
+      createHiddenInputForOmiseToken: _createHiddenInputForOmiseToken,
+      isInsideIframeApp: _isInsideIframeApp,
+      prepareConfig: _prepareConfig,
+      destroy: _destroy
+    };
 
   /* dev:end */
 
   // ------------------ Private vars
   let
+
     _app = {}
+
   ;
 
   _setup(settings);
@@ -168,8 +171,8 @@ export default function OmiseCardFactory(settings, initWhenStart) {
    */
   function setTokenAtOmiseTokenField(token) {
     const { submitAuto, onCreateTokenSuccess } = {
-      ...this.app.defaultConfig,
-      ...this.app.currentOpenConfig
+      ..._app.defaultConfig,
+      ..._app.currentOpenConfig
     };
 
     if (_app.formElement) {
