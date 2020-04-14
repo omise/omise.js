@@ -174,9 +174,10 @@ export default function OmiseCardFactory(settings, initWhenStart = true) {
       ..._app.defaultConfig,
       ..._app.currentOpenConfig
     };
+    const isSource = _isOmiseSource(token);
 
     if (_app.formElement) {
-      if (_isOmiseSource(token)) {
+      if (isSource) {
         _app.formElement.omiseSource.value = token;
       } else {
         _app.formElement.omiseToken.value = token;
@@ -186,8 +187,7 @@ export default function OmiseCardFactory(settings, initWhenStart = true) {
     if (submitAuto === 'yes' && _app.formElement) {
       _app.formElement.submit();
     }
-
-    (onCreateTokenSuccess || noop)(token); // TODO - return second param here for isSource
+    (onCreateTokenSuccess || noop)(token, isSource); 
 
     // clear current open config after submited
     _app.currentOpenConfig = {};
