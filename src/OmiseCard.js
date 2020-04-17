@@ -287,12 +287,12 @@ export default function OmiseCardFactory(settings, initWhenStart = true) {
       checkoutButton = document.createElement('button')
     ;
 
-    checkoutButton.className = 'omise-checkout-button'
-    checkoutButton.innerHTML = config.buttonLabel
+    checkoutButton.className = 'omise-checkout-button';
+    checkoutButton.innerHTML = config.buttonLabel;
 
     if (omiseScriptTag) {
       const formElement = _getFormByTarget(omiseScriptTag);
-      _app.formElement = formElement
+      _app.formElement = formElement;
       _createHiddenInputForOmiseToken(formElement);
     } else {
       console.warn('Missing Omise script tag');
@@ -302,7 +302,7 @@ export default function OmiseCardFactory(settings, initWhenStart = true) {
     checkoutButton.addEventListener(
       'click',
       event => {
-        event.preventDefault()
+        event.preventDefault();
 
         if (omiseScriptTag) {
           const config = _prepareConfig(extractDataFromElement(omiseScriptTag));
@@ -457,6 +457,42 @@ export default function OmiseCardFactory(settings, initWhenStart = true) {
         messageCloseAndSendToken(token)
       },
     }
+  }
+
+  /**
+   * 'Activate' button with given id using passed config
+   */
+  function _attachButton(id, cfg) {
+    const button = document.getElementById(id);
+    let buttonText = _app.defaultConfig.buttonLabel;
+
+    if (cfg.buttonLabel && buttonTest !== cfg.buttonLabel) {
+      buttonText = cfg.buttonLabel;
+    } else if (button.innerHTML) {
+      buttonText = button.innerHTML;
+    }
+
+    button.innerHTML = buttonText;
+    button.className += (button.className && ' ') + 'omise-checkout-button';
+
+    const { submitFormTarget } = _app.defaultConfig;
+    const formElement = submitFormTarget ? document.querySelector(submitFormTarget) : _getFormByTarget(button);
+
+    _createHiddenInputForOmiseToken(formElement);
+
+    button.addEventListener(
+      'click',
+      event => {
+        event.preventDefault()
+        _app.configForIframeOnLoad = cfg;
+        _app.formElement = formElement;
+        open(cfg);
+      },
+      false
+    );
+
+    return button;
+
   }
 
   /**
