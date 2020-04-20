@@ -3,15 +3,20 @@
  * The new Omise.js
  * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
  */
+
 import 'helpers/polyfill'
 
 import 'vendors/easyXDM.js'
 
 import config from './config'
-import Omise from './Omise'
-import OmiseCard from './OmiseCard'
+import OmiseFactory from './Omise'
+import OmiseCardFactory from './OmiseCard'
 
-export default Omise
+export default OmiseFactory
 
-global.Omise = new Omise(config)
-global.OmiseCard = new OmiseCard(config)
+/* dev:start */
+console.log('Development mode')
+/* dev:end */
+
+global.Omise = OmiseFactory(config)
+global.OmiseCard = OmiseCardFactory(config)

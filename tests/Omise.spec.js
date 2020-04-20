@@ -35,7 +35,7 @@ describe('Omise.js', () => {
     expect(verifyConfigStructure(config).error).toBeFalsy()
   })
 
-  test('should set puclic key correctly', () => {
+  test('should set public key correctly', () => {
     const omise = new Omise(config)
     const key = 'public_key_12345'
 
