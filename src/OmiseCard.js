@@ -260,7 +260,7 @@ export default function OmiseCardFactory(settings, initWhenStart = true) {
       )
     }
 
-    let inputs = {}
+    const inputs = {}
     ;['omiseToken', 'omiseSource'].forEach(name => {
       let input = formElement.querySelector(`input[name="${name}"]`)
       if (!input) {
