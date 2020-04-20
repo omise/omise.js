@@ -283,6 +283,7 @@ export default function OmiseCardFactory(settings, initWhenStart = true) {
     const { omiseScriptTag } = _app,
       config = _prepareConfig(extractDataFromElement(omiseScriptTag)),
       checkoutButton = document.createElement('button')
+
     checkoutButton.id = '__generated_omise_button'
     omiseScriptTag.parentNode.insertBefore(
       checkoutButton,
