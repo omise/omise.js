@@ -283,39 +283,14 @@ export default function OmiseCardFactory(settings, initWhenStart = true) {
     const { omiseScriptTag } = _app,
       config = _prepareConfig(extractDataFromElement(omiseScriptTag)),
       checkoutButton = document.createElement('button')
-    checkoutButton.className = 'omise-checkout-button'
-    checkoutButton.innerHTML = config.buttonLabel
 
-    if (omiseScriptTag) {
-      const formElement = _getFormByTarget(omiseScriptTag)
-      _app.formElement = formElement
-      _createHiddenInputForOmiseToken(formElement)
-    } else {
-      console.warn('Missing Omise script tag')
-    }
-
-    // bind button event.
-    checkoutButton.addEventListener(
-      'click',
-      event => {
-        event.preventDefault()
-
-        if (omiseScriptTag) {
-          const config = _prepareConfig(extractDataFromElement(omiseScriptTag))
-          _app.configForIframeOnLoad = { ...config }
-          open(config)
-        } else {
-          console.warn('Missing Omise script tag')
-        }
-      },
-      false
-    )
-
-    // inject button next script tag.
+    checkoutButton.id = '__generated_omise_button'
     omiseScriptTag.parentNode.insertBefore(
       checkoutButton,
       omiseScriptTag.nextSibling
     )
+
+    _attachButton('#' + checkoutButton.id, config)
 
     return checkoutButton
   }
@@ -454,6 +429,43 @@ export default function OmiseCardFactory(settings, initWhenStart = true) {
   }
 
   /**
+   * 'Activate' button with given css selector using passed config
+   */
+  function _attachButton(selector, cfg) {
+    const button = document.querySelector(selector)
+    let buttonText = _app.defaultConfig.buttonLabel
+
+    if (cfg.buttonLabel && buttonText !== cfg.buttonLabel) {
+      buttonText = cfg.buttonLabel
+    } else if (button.innerHTML) {
+      buttonText = button.innerHTML
+    }
+
+    button.innerHTML = buttonText
+    button.className += (button.className && ' ') + 'omise-checkout-button'
+
+    const { submitFormTarget } = _app.defaultConfig
+    const formElement = submitFormTarget
+      ? document.querySelector(submitFormTarget)
+      : _getFormByTarget(button)
+
+    _createHiddenInputForOmiseToken(formElement)
+
+    button.addEventListener(
+      'click',
+      event => {
+        event.preventDefault()
+        _app.configForIframeOnLoad = cfg
+        _app.formElement = formElement
+        open(cfg)
+      },
+      false
+    )
+
+    return button
+  }
+
+  /**
    * NOTE: LEGACY
    * Set configure to pay button
    * @param {string} buttonId - button target id.
@@ -478,41 +490,8 @@ export default function OmiseCardFactory(settings, initWhenStart = true) {
   function attach() {
     const attachedButtons = []
     _app.allConfigureButtons.forEach(item => {
-      const { configuration } = item,
-        button = document.querySelector(item.buttonId),
-        defaultButtonText = _app.defaultConfig.buttonLabel
-      let buttonText = defaultButtonText
-
-      if (
-        configuration.buttonLabel &&
-        buttonText !== configuration.buttonLabel
-      ) {
-        buttonText = configuration.buttonLabel
-      } else if (button.innerHTML) {
-        buttonText = button.innerHTML
-      }
-
-      button.innerHTML = buttonText
-
-      const { submitFormTarget } = _app.defaultConfig
-      const formElement = submitFormTarget
-        ? document.querySelector(submitFormTarget)
-        : _getFormByTarget(button)
-
-      _createHiddenInputForOmiseToken(formElement)
-
-      button.addEventListener(
-        'click',
-        event => {
-          event.preventDefault()
-          _app.configForIframeOnLoad = configuration
-          _app.formElement = formElement
-          open(configuration)
-        },
-        false
-      )
-
-      attachedButtons.push(button)
+      const { configuration } = item
+      attachedButtons.push(_attachButton(item.buttonId, configuration))
     })
 
     if (!_isInsideIframeApp()) {
