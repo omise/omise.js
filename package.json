@@ -1,14 +1,14 @@
 {
   "name": "omise.js",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "JavaScript library for collecting payment details on a user's browser and securely transmitting them to our servers",
   "main": "webpack.config.js",
   "scripts": {
     "start": "webpack-dev-server --hot --colors --progress --config webpack.dev.js",
     "dev:production": "webpack-dev-server --hot --colors --progress --config=./webpack.prod.js",
-    "build:dev": "webpack -p --config=./webpack.dev.js",
-    "build:staging": "webpack -p --config=./webpack.staging.js",
-    "build:production": "webpack -p --config=./webpack.prod.js",
+    "build:dev": "NODE_ENV=development webpack -p --config=./webpack.dev.js",
+    "build:staging": "NODE_ENV=development webpack -p --config=./webpack.staging.js",
+    "build:production": "NODE_ENV=production webpack -p --config=./webpack.prod.js",
     "test": "NODE_ENV=test NODE_PATH=./:./src/ jest --no-cache --setupFiles dotenv/config",
     "test:watch": "NODE_ENV=test npm test -- --watch",
     "cypress": "cypress",

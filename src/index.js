@@ -14,9 +14,5 @@ import OmiseCardFactory from './OmiseCard'
 
 export default OmiseFactory
 
-/* dev:start */
-console.log('Development mode')
-/* dev:end */
-
 global.Omise = OmiseFactory(config)
 global.OmiseCard = OmiseCardFactory(config)
