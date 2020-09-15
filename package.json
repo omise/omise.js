@@ -43,19 +43,11 @@
   },
   "homepage": "https://www.omise.co/omise-js",
   "devDependencies": {
-<<<<<<< HEAD
-    "@babel/core": "^7.8.7",
-    "@babel/plugin-proposal-class-properties": "^7.8.7",
-    "@babel/plugin-proposal-object-rest-spread": "^7.8.7",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/preset-env": "^7.8.7",
-=======
     "@babel/core": "^7.11.6",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.11.5",
->>>>>>> Update dependencies
     "babel-core": "^6.26.3",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^8.1.0",
