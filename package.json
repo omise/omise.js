@@ -6,9 +6,9 @@
   "scripts": {
     "start": "webpack-dev-server --hot --colors --progress --config webpack.dev.js",
     "dev:production": "webpack-dev-server --hot --colors --progress --config=./webpack.prod.js",
-    "build:dev": "NODE_ENV=development webpack -p --config=./webpack.dev.js",
-    "build:staging": "NODE_ENV=development webpack -p --config=./webpack.staging.js",
-    "build:production": "NODE_ENV=production webpack -p --config=./webpack.prod.js",
+    "build:dev": "webpack --env.NODE_ENV=development --config webpack.dev.js",
+    "build:staging": "webpack --env.NODE_ENV=staging --config webpack.staging.js",
+    "build:production": "webpack --env.NODE_ENV=production --config webpack.prod.js",
     "test": "NODE_ENV=test NODE_PATH=./:./src/ jest --no-cache --setupFiles dotenv/config",
     "test:watch": "NODE_ENV=test npm test -- --watch",
     "cypress": "cypress",

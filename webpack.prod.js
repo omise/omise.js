@@ -1,13 +1,14 @@
-const merge = require('webpack-merge')
 const webpack = require('webpack')
-const common = require('./webpack.common.js')
+const merge = require('webpack-merge')
+const commonConfig = require('./webpack.common.js')
 
 const config = merge({
+  mode: 'production',
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
   ],
-}, common.webpackConfig)
+}, commonConfig)
 
 module.exports = config

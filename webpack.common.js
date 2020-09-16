@@ -60,7 +60,7 @@ const config = {
   plugins: [
     new CleanPlugin('dist'),
     new Dotenv({
-      path: path.resolve(__dirname, '.env'),
+      path: '.env',
       safe: true,
     }),
     new webpack.BannerPlugin({
@@ -70,7 +70,4 @@ const config = {
   ],
 }
 
-module.exports = {
-  webpackConfig: config,
-  devBlocks: ['dev']
-}
+module.exports = config
