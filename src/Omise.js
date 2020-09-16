@@ -3,41 +3,36 @@
  * Omise.js Core
  * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
  */
-
 import { isUri } from 'valid-url'
 import 'whatwg-fetch'
 
-export default function OmiseFactory(config) {
-  const result = verifyConfigStructure(config)
-  if (result.error) throw new Error(result.message)
+export default class Omise {
+  constructor(config) {
+    const result = verifyConfigStructure(config)
+    if (result.error) {
+      throw new Error(result.message)
+    }
 
-  const RPC_TIMEOUT = 30000
+    this.config = config
+    this.publicKey = null
+    this._rpc = null
+  }
 
-  let //----------------- Public interface
-
-    Omise = {
-      config,
-      publicKey: null,
-      setPublicKey,
-      createSource,
-      createToken,
-    },
-    // ------------------ Private vars
-
-    _rpc = null
-
-  function _createRpc(callback) {
-    if (_rpc) {
-      return _rpc
+  _createRpc(callback) {
+    if (this._rpc) {
+      return this._rpc
     } else {
-      const { vaultUrl } = Omise.config
+      const { vaultUrl } = this.config
       const tm = setTimeout(() => {
-        _rpc.destroy()
-        _rpc = null
-        callback && callback()
-      }, RPC_TIMEOUT)
+        this._rpc.destroy()
+        this._rpc = null
 
-      _rpc = new easyXDM.Rpc(
+        if (callback) {
+          callback()
+        }
+      }, 30000)
+
+      this._rpc = new easyXDM.Rpc(
         {
           remote: `${vaultUrl}/provider`,
           onReady() {
@@ -51,22 +46,21 @@ export default function OmiseFactory(config) {
         }
       )
 
-      return _rpc
+      return this._rpc
     }
   }
 
-  function setPublicKey(publicKey) {
-    Omise.publicKey = publicKey
-    return Omise.publicKey
+  setPublicKey(publicKey) {
+    this.publicKey = publicKey
+    return this.publicKey
   }
 
-  function createSource(type, options, callback) {
-    const auth = btoa(Omise.publicKey)
+  createSource(type, options, callback) {
+    const auth = btoa(this.publicKey)
 
     options.type = type
 
-    const url = `${Omise.config.interfaceUrl}/sources/`
-
+    const url = `${this.config.interfaceUrl}/sources/`
     fetch(url, {
       method: 'post',
       headers: {
@@ -86,22 +80,26 @@ export default function OmiseFactory(config) {
       })
   }
 
-  function createToken(as, attributes, handler) {
-    const data = { [as]: attributes }
-    _createRpc(() => {
+  createToken(as, attributes, handler) {
+    const data = {}
+    data[as] = attributes
+
+    this._createRpc(() => {
       handler(0, {
         code: 'rpc_error',
         message: 'unable to connect to provider after timeout',
       })
     }).createToken(
-      Omise.publicKey,
+      this.publicKey,
       data,
-      response => handler(response.status, response.data),
-      e => handler(e.data.status, e.data.data)
+      response => {
+        handler(response.status, response.data)
+      },
+      e => {
+        handler(e.data.status, e.data.data)
+      }
     )
   }
-
-  return Omise
 }
 
 /**
