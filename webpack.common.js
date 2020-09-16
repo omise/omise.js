@@ -29,19 +29,11 @@ const banner = `
  * --------------------------------------------------------
  */
 const config = {
-  devtool: 'inline-source-map',
   entry: './src/index.js',
   output: {
     filename: 'omise.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-  },
-
-  devServer: {
-    inline: true,
-    host: '0.0.0.0',
-    port: 5001,
-    historyApiFallback: true,
   },
 
   resolve: {
@@ -67,7 +59,10 @@ const config = {
 
   plugins: [
     new CleanPlugin('dist'),
-    new Dotenv(),
+    new Dotenv({
+      path: '.env',
+      safe: true,
+    }),
     new webpack.BannerPlugin({
       banner,
       raw: true,
@@ -75,7 +70,4 @@ const config = {
   ],
 }
 
-module.exports = {
-  webpackConfig: config,
-  devBlocks: ['dev']
-}
+module.exports = config
