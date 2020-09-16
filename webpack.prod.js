@@ -8,24 +8,6 @@ const config = merge({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
   ],
-
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        enforce: 'pre',
-        exclude: /(node_modules|bower_components|\.spec\.js)/,
-        use: [{
-          loader: 'webpack-strip-blocks',
-          options: {
-            blocks: common.devBlocks,
-            start: '/*',
-            end: '*/'
-          }
-        }]
-      }
-    ]
-	}
 }, common.webpackConfig)
 
 module.exports = config
